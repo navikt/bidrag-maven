@@ -1,13 +1,7 @@
 name: Tag and commit
 description: Create a tag and commits changes to the git repository
 inputs:
-  author_name:
-    description: the name of the commit autor
-    required: true
-  author_email:
-    description: the email for the commit author
-    required: true
-  file_is_release:
+  is_release_file:
     description: file in the filesystem which will trigger action to perform a tag for a release version. if ommitted, no tagging will be done
     required: false
   commit_message:

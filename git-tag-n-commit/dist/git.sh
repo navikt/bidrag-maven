@@ -2,13 +2,13 @@
 set -e
 
 git remote set-url origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-git config --global user.email "$INPUT_AUTHOR_EMAIL"
-git config --global user.name "$INPUT_AUTHOR_NAME"
+git config --global user.email "$AUTHOR_EMAIL"
+git config --global user.name "$AUTHOR_NAME"
 
-if [ -z $INPUT_FILE_IS_RELEASE ]
+if [ -z $INPUT_IS_RELEASE_FILE ]
 then
   echo "No automatic release file is present. Tagging will not be done"
-elif [ -f $INPUT_FILE_IS_RELEASE ]
+elif [ -f $INPUT_IS_RELEASE_FILE ]
 then
   if [ -f $INPUT_TAG_FILE ]
   then
@@ -36,11 +36,9 @@ else
   echo "No file for automatic release is present, will not release"
 fi
 
-echo 'Files staged for commit'
-git diff --name-only --cached
-
 if ! git diff --quiet
 then
+  git diff --name-status
   echo "Commiting changes with commit message: $INPUT_COMMIT_MESSAGE"
 
   git add "$INPUT_PATTERN"
