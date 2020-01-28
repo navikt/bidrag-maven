@@ -47,13 +47,13 @@ jobs:
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
           artifact_folder: bidrag-actions/verify-mvn-dependencies
-      - run: date > .build-date
+      - run: date +"%Y-%m-%d:%T" > .build-date
       - name: commit ncc build in bidrag-actions
         uses: navikt/bidrag-actions/git-commit@feature-git
         with:
           author_email: ${{ github.head_commit.author.email }}
           author_name: ${{ github.head_commit.author.name }}
-          commit_message: "Fresh build of actions at {} using npm and ncc"
+          commit_message: "Fresh build of actions at {} with npm and ncc"
           commit_message_file: .build-date
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
