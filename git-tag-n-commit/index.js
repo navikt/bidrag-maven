@@ -27,7 +27,7 @@ function setAuthorInformation() {
     core.warning('No event path available, unable to fetch author info.');
 
     process.env.AUTHOR_NAME = 'Tag & Commit Action';
-    process.env.AUTHOR_EMAIL = 'navikt.bidrag-actions.tag-and-commit@github.com';
+    process.env.AUTHOR_EMAIL = 'navikt.bidrag-actions.git-tag-n-commit@github.com';
   }
 
   core.info(`Using '${process.env.AUTHOR_NAME} <${process.env.AUTHOR_EMAIL}>' as author.`);
