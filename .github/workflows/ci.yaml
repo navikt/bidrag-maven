@@ -49,7 +49,7 @@ jobs:
           artifact_folder: bidrag-actions/verify-mvn-dependencies
       - run: date +"%Y-%m-%d:%T" > .build-date
       - name: commit ncc build in bidrag-actions
-        uses: navikt/bidrag-actions/git-tag-n-commit@feature-git
+        uses: navikt/bidrag-actions/tag-and-commit@master
         with:
           author_email: ${{ github.head_commit.author.email }}
           author_name: ${{ github.head_commit.author.name }}
