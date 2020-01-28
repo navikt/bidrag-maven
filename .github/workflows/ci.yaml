@@ -49,10 +49,11 @@ jobs:
           artifact_folder: bidrag-actions/verify-mvn-dependencies
       - run: date +"%Y-%m-%d:%T" > .build-date
       - name: commit ncc build in bidrag-actions
-        uses: navikt/bidrag-actions/tag-and-commit@v2.0.1
+        uses: navikt/bidrag-actions/tag-and-commit@feature-git
         with:
           author_email: ${{ github.head_commit.author.email }}
           author_name: ${{ github.head_commit.author.name }}
-          commit_message: "Fresh build of actions with npm and ncc"
+          commit_message: "Fresh build of actions at {} with npm and ncc"
+          commit_message_file: .build-date
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -9,9 +9,7 @@ The action requires a file containing the tag to push, the message of the commit
 pattern to use with git add, and a file explaining it it is an automatic release; see action.yml.
 
 If a file containing the content of a tag is present, the content will replace {} from the commit
-and/or tag message provided.
+message and for the tag message (if provided).
 
-The author information of the tag and commit will be gathered from the GITHUB_EVENT. If no event is
-present, the following information will be used:
-- Author name: Tag & Commit Action
-- Author email: bidrag-actions.navikt@github.com
+The author information of the tag and commit should be gathered from the GITHUB_EVENT, ie:
+${{ github.head_commit.author }}
