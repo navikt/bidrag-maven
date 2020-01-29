@@ -5,14 +5,14 @@ git remote set-url origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${G
 git config --global user.email "$AUTHOR_EMAIL"
 git config --global user.name "$AUTHOR_NAME"
 
-if [ -z $INPUT_IS_RELEASE_FILE ]
+if [ -z "$INPUT_IS_RELEASE_FILE" ]
 then
   echo "No automatic release file is present. Tagging will not be done"
-elif [ -f $INPUT_IS_RELEASE_FILE ]
+elif [ -f "$INPUT_IS_RELEASE_FILE" ]
 then
-  if [ -f $INPUT_TAG_FILE ]
+  if [ -f "$INPUT_TAG_FILE" ]
   then
-    TAG_CONTENT=$(cat $INPUT_TAG_FILE)
+    TAG_CONTENT=$(cat "$INPUT_TAG_FILE")
     echo "Tagging new version with: $TAG_CONTENT"
 
     INPUT_COMMIT_MESSAGE=$(echo "$INPUT_COMMIT_MESSAGE" | sed "s/{}/$TAG_CONTENT/")
