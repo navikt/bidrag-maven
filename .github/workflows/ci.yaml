@@ -51,9 +51,7 @@ jobs:
       - name: commit ncc build in bidrag-actions
         uses: navikt/bidrag-actions/git-commit@master
         with:
-          author_email: ${{ github.head_commit.author.email }}
-          author_name: ${{ github.head_commit.author.name }}
-          commit_message: "Fresh build of actions at {} with npm and ncc"
+          commit_message: "{}: Fresh build of actions with npm and ncc"
           commit_message_file: .build-date
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
