@@ -17,4 +17,4 @@ noen tagging av release gjøres. Med andre ord, så er noen av disse "actions" s
 ![](https://github.com/navikt/bidrag-actions/workflows/build%20actions/badge.svg)
 
 Det er lagt inn en workflow for å bygge alle actions med npm og ncc. Derfor er det bare filene `/<action>/index.js` og `/<action>/<bash>.sh` som skal
-endres.
+endres når man skal forandre logikk i "action".
