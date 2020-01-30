@@ -10,8 +10,8 @@ Utenom miljøvariabler for filnavn, så finnes også miljøvariabler for autenti
 for commit og tag meldinger i tag-and-commit action.
 
 Andre sider ved design av disse "actions", er at de er laget for å kjøre sammen. Dvs. at enkelte actions produserer filer som kan brukes av andre
-"actions". Det er blant annet en sterk knytning mellom `release-verify-auto-deploy` og `git-tag-n-commit`. Hvis auto-deploy ikke kan gjøres vil ikke
-noen tagging av release gjøres. Med andre ord, så er noen av disse "actions" sterk knyttet.
+"actions". Det er blant annet en sterk knytning mellom `release-verify-auto-deploy` og `git-tag-n-commit-mvn-deploy`. Hvis auto-deploy ikke kan gjøres
+vil ikke noen tagging av release gjøres. Med andre ord, så er noen av disse "actions" sterk knyttet.
 
 ### Continuous integration
 ![](https://github.com/navikt/bidrag-actions/workflows/build%20actions/badge.svg)
