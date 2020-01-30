@@ -13,9 +13,12 @@ Andre sider ved design av disse "actions", er at de er laget for å kjøre samme
 "actions". 
 
 #### Sterke koblinger mellom actions:
-`release-prepare-mvn-pkg` -> `release-verify-auto-deploy`: `release-prepare-mvn-pkg` lager fil til `release-verify-auto-deploy` 
-`release-prepare-mvn-pkg` -> `release-mvn-pkg`: `release-prepare-mvn-pkg` lager fil til `release-mvn-pkg`
-`release-prepare-mvn-pkg` -> `git-tag-n-commit-mvn-deploy`: `release-prepare-mvn-pkg` lager fil til `git-tag-n-commit-mvn-deploy`.
+
+| sterke koblinger | beskrivelse  |
+|------------------|--------------|
+| `release-prepare-mvn-pkg` -> `release-verify-auto-deploy` | `release-prepare-mvn-pkg` lager fil til `release-verify-auto-deploy` |
+| `release-prepare-mvn-pkg` -> `release-mvn-pkg` | `release-prepare-mvn-pkg` lager fil til `release-mvn-pkg` |
+| `release-prepare-mvn-pkg` -> `git-tag-n-commit-mvn-deploy` | `release-prepare-mvn-pkg` lager fil til `git-tag-n-commit-mvn-deploy` |
 
 ### Continuous integration
 ![](https://github.com/navikt/bidrag-actions/workflows/build%20actions/badge.svg)
