@@ -26,10 +26,10 @@ jobs:
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
           artifact_folder: bidrag-actions/git-tag
-      - name: Install git-tag-n-commit
+      - name: Install git-tag-n-commit-mvn-deploy
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
-          artifact_folder: bidrag-actions/git-tag-n-commit
+          artifact_folder: bidrag-actions/git-tag-n-commit-mvn-deploy
       - name: Install release-mvn-pkg
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
