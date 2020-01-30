@@ -22,6 +22,10 @@ jobs:
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
           artifact_folder: bidrag-actions/git-commit
+      - name: Install git-commit
+        uses: navikt/bidrag-actions/build-node-artifact@master
+        with:
+          artifact_folder: bidrag-actions/git-commit
       - name: Install git-tag-n-commit
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
