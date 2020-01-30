@@ -58,3 +58,11 @@ jobs:
           commit_message_file: .build-date
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo v4.0.0 > .tag-file
+      - name: tag new release
+        uses: navikt/bidrag-actions/git-tag@master
+        with:
+          tag_message: "{}: New action; git-tag - and new name: git-tag-n-commit -> git-tag-n-commit-mvn-deploy"
+          tag_file: .tag-file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
