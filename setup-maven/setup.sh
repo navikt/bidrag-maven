@@ -7,7 +7,7 @@ MAVEN_REPO=~/.m2
 MAVEN_SETTINGS="<settings>
     <servers>
         <server>
-           <id>fp-felles</id>
+           <id>maven-release</id>
            <username>$GITHUB_ACTOR</username>
            <password>$GITHUB_TOKEN</password>
       </server>
@@ -22,9 +22,9 @@ MAVEN_SETTINGS="<settings>
           <url>https://repo.maven.apache.org/maven2</url>
         </repository>
         <repository>
-          <id>fp-felles</id>
+          <id>maven-release</id>
           <name>GitHub felles Apache Maven Packages</name>
-          <url>https://maven.pkg.github.com/navikt/fp-felles/</url>
+          <url>https://maven.pkg.github.com/navikt/maven-release/</url>
         </repository>
       </repositories>
     </profile>
