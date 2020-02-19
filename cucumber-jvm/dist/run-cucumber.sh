@@ -29,7 +29,7 @@ git pull
 
 echo "Running cucumber tests with cucumber tags: $INPUT_CUCUMBER_TAGS"
 
-docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
+sudo docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
   -Dcucumber.options='-- tags'"\"@$INPUT_CUCUMBER_TAGS\"" \
   -DENVIRONMENT="$INPUT_ENVIRONMENT" \
   "$MAVEN_CUCUMBER_CREDENTIALS"
