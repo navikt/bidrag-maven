@@ -18,6 +18,10 @@ jobs:
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
           artifact_folder: bidrag-actions/build-node-artifact
+      - name: Install cucumber-jvm
+        uses: navikt/bidrag-actions/build-node-artifact@master
+        with:
+          artifact_folder: bidrag-actions/cucumber-jvm
       - name: Install git-commit
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
