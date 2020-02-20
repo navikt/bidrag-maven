@@ -9,12 +9,12 @@ fi
 
 echo "Working directory"
 pwd
+env
 
 if [ -z "$INPUT_MAVEN_BINARY" ]; then
-  "$INPUT_MAVEN_BINARY" -B dependency:tree | tee .dependency-tree
+  mvn -B dependency:tree | tee .dependency-tree
 else
-  >&2 echo "::error No maven binary to use"
-  exit 1;
+  "$INPUT_MAVEN_BINARY" -B dependency:tree | tee .dependency-tree
 fi
 
 DEPENDENCIES=$(cat .dependency-tree | grep "\[INFO]" | grep "\- ")
