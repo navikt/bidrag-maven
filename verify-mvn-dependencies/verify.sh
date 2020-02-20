@@ -10,7 +10,12 @@ fi
 echo "Working directory"
 pwd
 
-mvn -B dependency:tree | tee .dependency-tree
+if [ -z "$INPUT_MAVEN_BINARY" ]; then
+  "$INPUT_MAVEN_BINARY" -B dependency:tree | tee .dependency-tree
+else
+  echo "no input binary to use"
+  exit 1;
+fi
 
 DEPENDENCIES=$(cat .dependency-tree | grep "\[INFO]" | grep "\- ")
 COUNT=$(echo "$DEPENDENCIES" | grep -c SNAPSHOT || true)
