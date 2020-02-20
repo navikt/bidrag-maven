@@ -4,6 +4,10 @@ runs:
   using: node12
   main: dist/index.js
 inputs:
+  maven_binary:
+    description: alternative maven command if no binaries installed
+    required: false
+    default: mvn
   src_folder:
     description: the name of a source folder to run the commands form
     required: false
