@@ -9,12 +9,11 @@ fi
 
 echo "Working directory"
 pwd
-env
 
 if [ -z "$INPUT_MAVEN_IMAGE" ]; then
   mvn -B dependency:tree | tee .dependency-tree
 else
-  docker run -it --rm -v "$PWD":/usr/src/mymaven -v "$HOME"/.m2:/root/.m2 -w /usr/src/mymaven \
+  docker run --rm -v "$PWD":/usr/src/mymaven -v "$HOME"/.m2:/root/.m2 -w /usr/src/mymaven \
     "$INPUT_MAVEN_IMAGE" -B dependency:tree | tee .dependency-tree
 fi
 
