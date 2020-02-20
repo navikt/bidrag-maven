@@ -13,7 +13,7 @@ pwd
 if [ -z "$INPUT_MAVEN_BINARY" ]; then
   "$INPUT_MAVEN_BINARY" -B dependency:tree | tee .dependency-tree
 else
-  echo "no input binary to use"
+  >&2 echo "::error No maven binary to use"
   exit 1;
 fi
 
