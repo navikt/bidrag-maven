@@ -11,13 +11,14 @@ echo "Working directory"
 pwd
 env
 
-if [ -z "$INPUT_MAVEN_BINARY" ]; then
+if [ -z "$INPUT_MAVEN_IMAGE" ]; then
   mvn -B dependency:tree | tee .dependency-tree
 else
-  "$INPUT_MAVEN_BINARY" -B dependency:tree | tee .dependency-tree
+  docker run -it --rm -v "$PWD":/usr/src/mymaven -v "$HOME"/.m2:/root/.m2 -w /usr/src/mymaven \
+    "$INPUT_MAVEN_IMAGE" -B dependency:tree | tee .dependency-tree
 fi
 
-DEPENDENCIES=$(cat .dependency-tree | grep "\[INFO]" | grep "\- ")
+DEPENDENCIES=$(cat .dependency-tree | grep "\[INFO]" | grep -e "\- " -e "+-")
 COUNT=$(echo "$DEPENDENCIES" | grep -c SNAPSHOT || true)
 
 echo "Found $COUNT SNAPSHOT dependencies"
