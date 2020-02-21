@@ -1,9 +1,12 @@
-name: maven build
-description: Perform goals clean and install with batch marking and error stacktracing on maven execution
+name: maven docker action
+description: Perform goals with maven on docker
 inputs:
+  maven_commands:
+    description: what maven goals/command to perform
+    required: true
   maven_image:
     description: the docker maven image to use containing maven and java version
-    required: false
+    required: true
   src_folder:
     description: an optional src folder where the build is to be performed
     required: false

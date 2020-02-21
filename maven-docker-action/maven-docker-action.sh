@@ -9,9 +9,5 @@ fi
 echo "Working directory"
 pwd
 
-if [ -z "$INPUT_MAVEN_IMAGE" ]; then
-  mvn -B clean install
-else
-  docker run --rm -v "$PWD":/usr/src/mymaven -v "$HOME"/.m2:/root/.m2 -w /usr/src/mymaven \
-    "$INPUT_MAVEN_IMAGE" mvn -B clean install
-fi
+docker run --rm -v "$PWD":/usr/src/mymaven -v "$HOME"/.m2:/root/.m2 -w /usr/src/mymaven \
+  "$INPUT_MAVEN_IMAGE" "$INPUT_MAVEN_COMMANDS"

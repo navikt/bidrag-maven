@@ -1,4 +1,4 @@
-# bidrag-actions/cucumber-jvm
+# bidrag-actions/maven-cucumber
 
 This action will run cucumber integration tests for provided cucumber tags and credentials
 
