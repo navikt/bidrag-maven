@@ -5,12 +5,9 @@ async function run() {
   try {
 
     // Execute release bash script
-    await exec.exec(`${__dirname}/maven-docker-action.sh`);
+    await exec.exec(`${__dirname}/maven-build.sh`);
 
   } catch (error) {
     core.setFailed(error.message);
   }
 }
-
-// noinspection JSIgnoredPromiseFromCall
-run();
