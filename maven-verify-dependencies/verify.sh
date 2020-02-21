@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-
 if [ ! -z "$INPUT_SRC_FOLDER" ]
 then
   cd "$INPUT_SRC_FOLDER"
