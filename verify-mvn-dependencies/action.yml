@@ -4,10 +4,9 @@ runs:
   using: node12
   main: dist/index.js
 inputs:
-  maven_binary:
-    description: alternative maven command if no binaries installed
+  maven_image:
+    description: use a maven docker image to run maven
     required: false
-    default: mvn
   src_folder:
     description: the name of a source folder to run the commands form
     required: false
