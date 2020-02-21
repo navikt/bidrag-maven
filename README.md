@@ -33,10 +33,8 @@ endres når man skal forandre logikk i "action".
 
 Versjon | Endringstype      | Bbeskrivelse
 --------|-------------------|------------
-v5.0.0  | Opprettet         | `maven-build`: bygger en maven artifakt med et docker image
 v5.0.0  | Slettet/Endret    | `verify-mvn-dependencies` -> `maven-verify-dependencies`: docker image for maven, og feil hvis ikke kjøring er SUCCESS
 v5.0.0  | Slettet/Opprettet | `setup-maven` -> `maven-setup`
-v5.0.0  | Opprettet         | `maven-cucumber`: kjører mvn test for enn/flere cucumber tags med et docker image
 v4.0.7  | Endret            | `git-commit`: no echo statement
 v4.0.6  | Endret            | `release-prepare-mvn-pkg`: trimming whitespaces on release numbers
 v4.0.5  | Endret            | `bidrag-actions/release-mvn-pkg` will show error stack traces when maven failures
