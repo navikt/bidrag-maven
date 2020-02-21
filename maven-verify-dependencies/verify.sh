@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-
 if [ ! -z "$INPUT_SRC_FOLDER" ]
 then
   cd "$INPUT_SRC_FOLDER"
@@ -17,7 +16,7 @@ else
     "$INPUT_MAVEN_IMAGE" mvn -B dependency:tree | tee .dependency-tree
 fi
 
-cat .dependency-tree | grep BUILD | grep -c SUCCESS # fails if count is 0
+cat .dependency-tree | grep BUILD | grep -c SUCCESS | sed 's/1//' # fails if count is 0
 
 DEPENDENCIES=$(cat .dependency-tree | grep "\[INFO]" | grep -e "\- " -e "+-")
 COUNT=$(echo "$DEPENDENCIES" | grep -c SNAPSHOT || true)
