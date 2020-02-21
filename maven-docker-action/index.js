@@ -5,7 +5,7 @@ async function run() {
   try {
 
     // Execute release bash script
-    await exec.exec(`${__dirname}/maven-build.sh`);
+    await exec.exec(`${__dirname}/maven-docker-action.sh`);
 
   } catch (error) {
     core.setFailed(error.message);
