@@ -1273,15 +1273,12 @@ async function run() {
   try {
 
     // Execute release bash script
-    await exec.exec(__webpack_require__.ab + "maven-docker-action.sh");
+    await exec.exec(__webpack_require__.ab + "maven-build.sh");
 
   } catch (error) {
     core.setFailed(error.message);
   }
 }
-
-// noinspection JSIgnoredPromiseFromCall
-run();
 
 
 /***/ }),
