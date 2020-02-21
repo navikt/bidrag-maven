@@ -18,7 +18,7 @@ Andre sider ved design av disse "actions", er at de er laget for å kjøre samme
 #### Sterke koblinger mellom actions:
 
 Noen av actions har sterke koblinger i form av at de produserer filer som påvirker hvordan andre actions oppfører seg. For at filene som produseres
-skal være synlig av andre "actions", så må de vøre beskrevet i samme jobb.
+skal være synlig av andre "actions", så må de være beskrevet i samme jobb.
 
  sterke koblinger | beskrivelse 
 ------------------|-------------
@@ -33,6 +33,7 @@ endres når man skal forandre logikk i "action".
 
 Versjon | Endringstype      | Bbeskrivelse
 --------|-------------------|------------
+v5.0.0  | Opprettet         | `maven-build`: byggg med maven med stacktracing skrudd på (kan gjøres via docker image)
 v5.0.0  | Slettet/Endret    | `verify-mvn-dependencies` -> `maven-verify-dependencies`: docker image for maven, og feil hvis ikke kjøring er SUCCESS
 v5.0.0  | Slettet/Opprettet | `setup-maven` -> `maven-setup`
 v5.0.0  | Opprettet         | `maven-cucumber`: kjører mvn test for enn/flere cucumber tags med et docker image
