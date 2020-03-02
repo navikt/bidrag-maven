@@ -34,7 +34,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(622);
+/******/ 		return __webpack_require__(630);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -43,19 +43,11 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ 176:
-/***/ (function() {
-
-eval("require")("@actions/exec");
-
-
-/***/ }),
-
-/***/ 622:
+/***/ 630:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
-const core = __webpack_require__(968);
-const exec = __webpack_require__(176);
+const core = __webpack_require__(675);
+const exec = __webpack_require__(760);
 
 async function run() {
   try {
@@ -71,10 +63,18 @@ run();
 
 /***/ }),
 
-/***/ 968:
+/***/ 675:
 /***/ (function() {
 
 eval("require")("@actions/core");
+
+
+/***/ }),
+
+/***/ 760:
+/***/ (function() {
+
+eval("require")("@actions/exec");
 
 
 /***/ })
