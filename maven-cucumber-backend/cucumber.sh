@@ -9,6 +9,7 @@ if [ -z "$INPUT_MAVEN_IMAGE" ]; then
   exit 1;
 fi
 
+cd "$RUNNER_WORKSPACE"
 sudo rm -rf bidrag-cucumber-backend
 git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
 cd bidrag-cucumber-backend
@@ -30,12 +31,14 @@ if [ -z "$MAVEN_TEST_USER_CREDENTIALS" ]; then
 fi
 
 if [ -z "$MAVEN_PIP_USER_CREDENTIALS" ]; then
+  echo "Running in $ENVIRONMENT without PIP credentials"
   docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
     -DENVIRONMENT="$ENVIRONMENT" \
     "$MAVEN_USER_CREDENTIALS" \
     "$MAVEN_TEST_USER_CREDENTIALS" \
     -Dcucumber.options='--tags "@bidrag-dokument"'
 else
+  echo "Running in $ENVIRONMENT with PIP credentials"
   docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
     -DENVIRONMENT="$ENVIRONMENT" \
     "$MAVEN_USER_CREDENTIALS" \
