@@ -25,10 +25,7 @@ if [ -z "$TEST_USER_AUTHENTICATION" ]; then
   exit 1;
 fi
 
-CUCUMBER_OPTIONS=$(echo "$INPUT_CUCUMBER_OPTIONS" | sed 's;^\\;;') # remove the first character when is a backslash...
-
-echo "Input cucumber options: $INPUT_CUCUMBER_OPTIONS"
-echo "Cucumber options: $CUCUMBER_OPTIONS"
+echo "Input cucumber tag: $INPUT_CUCUMBER_TAG"
 
 if [ -z "$INPUT_PIP_USER" ]; then
   echo "Envrironment: $ENVIRONMENT without PIP"
@@ -37,7 +34,7 @@ if [ -z "$INPUT_PIP_USER" ]; then
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
-    -Dcucumber.options="$CUCUMBER_OPTIONS"
+    -Dcucumber.options="´--tags \"@$INPUT_CUCUMBER_TAG\"'"
 
 else
   if [ -z "$IPIP_USER_AUTHENTICATION" ]; then
@@ -52,5 +49,6 @@ else
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
     -DPIP_USER="$INPUT_PIP_USER" -DPIP_AUTH="$PIP_USER_AUTHENTICATION" \
-    -Dcucumber.options="$CUCUMBER_OPTIONS"
+    -Dcucumber.options="´--tags \"@$INPUT_CUCUMBER_TAG\"'"
+
 fi

@@ -8,7 +8,7 @@ classpath to be able to run this action
 
 The action requires four inputs, see action.yml:
 - the maven image where the integration tests are to run
-- the cucumber options determining how cucumber will perform
+- the cucumber tag determining what tests to run
 - the username of the nav user running the cucumber tests
 - the username of the test user used in the cucumber tests
 
