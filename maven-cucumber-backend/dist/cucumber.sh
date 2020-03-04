@@ -16,21 +16,24 @@ else
 fi
 
 if [ -z "$USER_AUTHENTICATION" ]; then
-  >&2 echo "::error No USER_AUTHENTICATION (password) for a nav user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+  >&2 echo "::error No USER_AUTHENTICATION (password) for a nav user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
   exit 1;
 fi
 
 if [ -z "$TEST_USER_AUTHENTICATION" ]; then
-  >&2 echo "::error No TEST_USER_AUTHENTICATION for for the test user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+  >&2 echo "::error No TEST_USER_AUTHENTICATION for for the test user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
   exit 1;
 fi
 
-echo "Cucumber options: $INPUT_CUCUMBER_OPTIONS"
+CUCUMBER_OPTIONS=$(echo INPUT_CUCUMBER_OPTIONS | sed 's;^\\;;') # remove the first character when is a backslash...
+
+echo "Input cucumber options: $INPUT_CUCUMBER_OPTIONS"
+echo "Cucumber options: $CUCUMBER_OPTIONS"
 
 if [ -z "$INPUT_PIP_USER" ]; then
   echo "Envrironment: $ENVIRONMENT without PIP"
 
-  docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
+  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
@@ -44,7 +47,7 @@ else
 
   echo "Envrironment: $ENVIRONMENT with PIP"
 
-  docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
+  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
