@@ -25,7 +25,9 @@ if [ -z "$TEST_USER_AUTHENTICATION" ]; then
   exit 1;
 fi
 
-echo "Input cucumber tag: $INPUT_CUCUMBER_TAG"
+CUCUMBER_OPTIONS="cucumber.options=´--tags \"@$INPUT_CUCUMBER_TAG\"'"
+echo "Cucumber tag:     $INPUT_CUCUMBER_TAG"
+echo "Cucumber options: $CUCUMBER_OPTIONS"
 
 if [ -z "$INPUT_PIP_USER" ]; then
   echo "Envrironment: $ENVIRONMENT without PIP"
@@ -34,7 +36,7 @@ if [ -z "$INPUT_PIP_USER" ]; then
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
-    -Dcucumber.options="´--tags \"@$INPUT_CUCUMBER_TAG\"'"
+    -D"$CUCUMBER_OPTIONS"
 
 else
   if [ -z "$IPIP_USER_AUTHENTICATION" ]; then
@@ -49,6 +51,6 @@ else
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
     -DPIP_USER="$INPUT_PIP_USER" -DPIP_AUTH="$PIP_USER_AUTHENTICATION" \
-    -Dcucumber.options="´--tags \"@$INPUT_CUCUMBER_TAG\"'"
+    -D"$CUCUMBER_OPTIONS"
 
 fi
