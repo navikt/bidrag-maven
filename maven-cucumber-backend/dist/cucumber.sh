@@ -20,25 +20,33 @@ else
   export ENVIRONMENT=q0
 fi
 
-if [ -z "$MAVEN_USER_CREDENTIALS" ]; then
-  >&2 echo "::error No MAVEN_USER_CREDENTIALS for a nav user to set up security of the tests are provided, see bidrag-actions/maven-cucumber-bidrag/README.md"
+if [ -z $USER_AUTHENTICATION ]; then
+  >&2 echo "::error No USER_AUTHENTICATION (password) for a nav user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
   exit 1;
 fi
 
-if [ -z "$MAVEN_TEST_USER_CREDENTIALS" ]; then
-  >&2 echo "::error No MAVEN_TEST_USER_CREDENTIALS for for the test suite are provided, see bidrag-actions/maven-cucumber-bidrag/README.md"
+if [ -z $TEST_USER_AUTHENTICATION ]; then
+  >&2 echo "::error No TEST_USER_AUTHENTICATION for for the test user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
   exit 1;
 fi
 
-if [ -z "$MAVEN_PIP_USER_CREDENTIALS" ]; then
+if [ -z $INPUT_PIP_USER ]; then
   echo "Running in $ENVIRONMENT without PIP credentials"
+
   docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
     -DENVIRONMENT="$ENVIRONMENT" \
-    "$MAVEN_USER_CREDENTIALS" \
-    "$MAVEN_TEST_USER_CREDENTIALS" \
+    -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
+    -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
     -Dcucumber.options='--tags "@bidrag-dokument"'
+
 else
   echo "Running in $ENVIRONMENT with PIP credentials"
+
+  if [ -z $IPIP_USER_AUTHENTICATION ]; then
+    >&2 echo "::error No PIP_USER_AUTHENTICATION for for the test user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+    exit 1;
+  fi
+
   docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
     -DENVIRONMENT="$ENVIRONMENT" \
     "$MAVEN_USER_CREDENTIALS" \
