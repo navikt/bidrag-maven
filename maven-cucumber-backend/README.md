@@ -6,13 +6,16 @@ will be deleted.
 Requires a runner which can perform shell scripts on a docker image with java and maven to run the integration tests. It must also have nodejs on its
 classpath to be able to run this action
 
-The action requires two inputs, see action.yml:
+The action requires four inputs, see action.yml:
 - the maven image where the integration tests are to run
 - the cucumber tag determining what tests to run
+- the username of the nav user running the cucumber tests
+- the username of the test user used in the cucumber tests
 
 In addition to direct inputs, some environment variables must be provided:
-- MAVEN_USER_CREDENTIALS: the credentials of a nav user: `x123456`, with password: `xxxx` (`-DUSERNAME=x123456 -DUSER_AUTH=xxxx`)
-- MAVEN_TEST_USER_CREDENTIALS: the credentials of a nav test user: `z123456`, with password: `zzzz` (`-DTEST_USER=z123456 -DTEST_USER_AUTH=zzzz`)
+- USER_AUTHENTICATION: the password belonging to the user stated in the input
+- TEST_USER_AUTHENTICATION: the password belonging to the test user stated in the input
 
-When cucumber tag is @bidrag-sak, the following variables must also be provided:
-MAVEN_PIP_USER_CREDENTIALS: the credentials of the pip machinge user: `srvuser`, with password: `yyyy` (`-DPIP_USER=srvuser -DPIP_AUTH=yyyy`)
+When cucumber tag is @bidrag-sak, the following must also be provided:
+- a username for the pip user, (aka. `srv<user>`)
+- PIP_USER_AUTHENTICATION: the password for this server user
