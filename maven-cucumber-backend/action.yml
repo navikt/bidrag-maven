@@ -1,0 +1,21 @@
+name: Cucumber integration with JVM
+description: Checks out bidrag-cucumber-backend to runner workspace and runs integration tests, will delete existing bidrag-dokument-backend folder
+runs:
+  using: node12
+  main: dist/index.js
+inputs:
+  maven_image:
+    description: The image containing maven and java version to use for running the integration tests.
+    required: true
+  cucumber_options:
+    description: The cucumber options to use when running the integration tests suites
+    required: true
+  username:
+    description: The nav user which will be used to set up security for the integration tests
+    required: true
+  test_user:
+    description: The test user which will be used running the scenarios in the integration tests
+    required: true
+  pip_user:
+    description: The server user which is used in bidrag-sak
+    required: false

@@ -30,6 +30,10 @@ jobs:
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
           artifact_folder: bidrag-actions/git-tag-n-commit-mvn-deploy
+      - name: Install maven-cucumber-backend
+        uses: navikt/bidrag-actions/build-node-artifact@master
+        with:
+          artifact_folder: bidrag-actions/maven-cucumber-backend
       - name: Install maven-setup
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
