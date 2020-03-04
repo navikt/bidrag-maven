@@ -25,7 +25,7 @@ if [ -z "$TEST_USER_AUTHENTICATION" ]; then
   exit 1;
 fi
 
-CUCUMBER_OPTIONS=$(echo INPUT_CUCUMBER_OPTIONS | sed 's;^\\;;') # remove the first character when is a backslash...
+CUCUMBER_OPTIONS=$(echo "$INPUT_CUCUMBER_OPTIONS" | sed 's;^\\;;') # remove the first character when is a backslash...
 
 echo "Input cucumber options: $INPUT_CUCUMBER_OPTIONS"
 echo "Cucumber options: $CUCUMBER_OPTIONS"
