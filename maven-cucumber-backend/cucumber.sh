@@ -37,7 +37,7 @@ if [ -z $INPUT_PIP_USER ]; then
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
-    -Dcucumber.options='--tags "@bidrag-dokument"'
+    -Dcucumber.options="$CUCUMBER_OPTIONS"
 
 else
   echo "Running in $ENVIRONMENT with PIP credentials"

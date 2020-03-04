@@ -7,8 +7,8 @@ inputs:
   maven_image:
     description: The image containing maven and java version to use for running the integration tests.
     required: true
-  cucumber_tag:
-    description: The cucumber tag to use when running integration tests suite
+  cucumber_options:
+    description: The cucumber options to use when running the integration tests suites
     required: true
   username:
     description: The nav user which will be used to set up security for the integration tests
