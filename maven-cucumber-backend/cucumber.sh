@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e
 
+############################################
+#
+# Følgende skjer i dette skriptet:
+# 1) cloner bidrag-cucumber-backend direkte til RUNNER_WORKSPACE
+# 2) setter q1 som miljø på feature brancher (q0 når master)
+# 3) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen
+# 4)
+#
+############################################
+
 echo "Working directory:"
 pwd
 
@@ -25,9 +35,9 @@ if [ -z "$TEST_USER_AUTHENTICATION" ]; then
   exit 1;
 fi
 
-CUCUMBER_OPTIONS="cucumber.options=´--tags \"@$INPUT_CUCUMBER_TAG\"'"
-echo "Cucumber tag:     $INPUT_CUCUMBER_TAG"
-echo "Cucumber options: $CUCUMBER_OPTIONS"
+FILTER_TAGS=$(echo "cucmber.filter.tags=#@$INPUT_CUCUMBER_TAG#" | sed 's/#/"/g')
+echo "Cucumber tag: $INPUT_CUCUMBER_TAG"
+echo "Filter tags : $FILTER_TAGS"
 
 if [ -z "$INPUT_PIP_USER" ]; then
   echo "Envrironment: $ENVIRONMENT without PIP"
@@ -36,7 +46,7 @@ if [ -z "$INPUT_PIP_USER" ]; then
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
-    -D"$CUCUMBER_OPTIONS"
+    -D"$FILTER_TAGS"
 
 else
   if [ -z "$IPIP_USER_AUTHENTICATION" ]; then
@@ -51,6 +61,6 @@ else
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
     -DPIP_USER="$INPUT_PIP_USER" -DPIP_AUTH="$PIP_USER_AUTHENTICATION" \
-    -D"$CUCUMBER_OPTIONS"
+    -D"$FILTER_TAGS"
 
 fi
