@@ -4,10 +4,10 @@ set -e
 ############################################
 #
 # Følgende skjer i dette skriptet:
-# 1) cloner bidrag-cucumber-backend direkte til RUNNER_WORKSPACE
+# 1) cloner bidrag-cucumber-backend direkte til RUNNER_WORKSPACE (hvis denne finnes fra før, slettes den)
 # 2) setter q1 som miljø på feature brancher (q0 når master)
 # 3) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen
-# 4)
+# 4) kjører mvn test -e i et docker image og all konfigurasjon for integeasjonstesting
 #
 ############################################
 
@@ -42,7 +42,7 @@ echo "Filter tags : $FILTER_TAGS"
 if [ -z "$INPUT_PIP_USER" ]; then
   echo "Envrironment: $ENVIRONMENT without PIP"
 
-  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
+  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn test -e \
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
@@ -56,7 +56,7 @@ else
 
   echo "Envrironment: $ENVIRONMENT with PIP"
 
-  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
+  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn test -e \
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
