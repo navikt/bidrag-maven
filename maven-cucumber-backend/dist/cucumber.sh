@@ -1,13 +1,18 @@
 #!/bin/bash
 set -e
 
+############################################
+#
+# Følgende skjer i dette skriptet:
+# 1) cloner bidrag-cucumber-backend direkte til RUNNER_WORKSPACE (hvis denne finnes fra før, slettes den)
+# 2) setter q1 som miljø på feature brancher (q0 når master)
+# 3) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen
+# 4) kjører mvn test -e i et docker image og all konfigurasjon for integeasjonstesting
+#
+############################################
+
 echo "Working directory:"
 pwd
-
-if [ -z "$INPUT_MAVEN_IMAGE" ]; then
-  >&2 echo "::error A name of an image cantaining java and maven must be provided, see https://hub.docker.com/_/maven"
-  exit 1;
-fi
 
 cd "$RUNNER_WORKSPACE"
 sudo rm -rf bidrag-cucumber-backend
@@ -20,37 +25,42 @@ else
   export ENVIRONMENT=q0
 fi
 
-if [ -z $USER_AUTHENTICATION ]; then
-  >&2 echo "::error No USER_AUTHENTICATION (password) for a nav user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+if [ -z "$USER_AUTHENTICATION" ]; then
+  >&2 echo "::error No USER_AUTHENTICATION (password) for a nav user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
   exit 1;
 fi
 
-if [ -z $TEST_USER_AUTHENTICATION ]; then
-  >&2 echo "::error No TEST_USER_AUTHENTICATION for for the test user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+if [ -z "$TEST_USER_AUTHENTICATION" ]; then
+  >&2 echo "::error No TEST_USER_AUTHENTICATION for for the test user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
   exit 1;
 fi
 
-if [ -z $INPUT_PIP_USER ]; then
-  echo "Running in $ENVIRONMENT without PIP credentials"
+FILTER_TAGS=$(echo "cucmber.filter.tags=#@$INPUT_CUCUMBER_TAG#" | sed 's/#/"/g')
+echo "Cucumber tag: $INPUT_CUCUMBER_TAG"
+echo "Filter tags : $FILTER_TAGS"
 
-  docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
+if [ -z "$INPUT_PIP_USER" ]; then
+  echo "Envrironment: $ENVIRONMENT without PIP"
+
+  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn test -e \
     -DENVIRONMENT="$ENVIRONMENT" \
     -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
     -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
-    -Dcucumber.options="$CUCUMBER_OPTIONS"
+    -D"$FILTER_TAGS"
 
 else
-  echo "Running in $ENVIRONMENT with PIP credentials"
-
-  if [ -z $IPIP_USER_AUTHENTICATION ]; then
+  if [ -z "$IPIP_USER_AUTHENTICATION" ]; then
     >&2 echo "::error No PIP_USER_AUTHENTICATION for for the test user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
     exit 1;
   fi
 
-  docker run --rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn clean test \
+  echo "Envrironment: $ENVIRONMENT with PIP"
+
+  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn test -e \
     -DENVIRONMENT="$ENVIRONMENT" \
-    "$MAVEN_USER_CREDENTIALS" \
-    "$MAVEN_TEST_USER_CREDENTIALS" \
-    "$MAVEN_PIP_USER_CREDENTIALS" \
-    -Dcucumber.options='--tags "@bidrag-sak"'
+    -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
+    -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
+    -DPIP_USER="$INPUT_PIP_USER" -DPIP_AUTH="$PIP_USER_AUTHENTICATION" \
+    -D"$FILTER_TAGS"
+
 fi
