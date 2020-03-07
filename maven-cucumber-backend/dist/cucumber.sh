@@ -11,10 +11,11 @@ set -e
 #
 ############################################
 
+cd "$RUNNER_WORKSPACE"
+
 echo "Working directory:"
 pwd
 
-cd "$RUNNER_WORKSPACE"
 sudo rm -rf bidrag-cucumber-backend
 git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
 cd bidrag-cucumber-backend
@@ -35,18 +36,18 @@ if [ -z "$TEST_USER_AUTHENTICATION" ]; then
   exit 1;
 fi
 
-FILTER_TAGS=$(echo "cucmber.filter.tags=#@$INPUT_CUCUMBER_TAG#" | sed 's/#/"/g')
-echo "Cucumber tag: $INPUT_CUCUMBER_TAG"
-echo "Filter tags : $FILTER_TAGS"
+FILTER_TAGS="cucmber.filter.tags='@$INPUT_CUCUMBER_TAG'"
+
+RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn test -e -DENVIRONMENT=$ENVIRONMENT \\
+  -DUSERNAME=$INPUT_USERNAME -DTEST_USER=$INPUT_TEST_USER -D$FILTER_TAGS"
+
+echo "docker run without authentication: $RUN_ARGUMENT"
 
 if [ -z "$INPUT_PIP_USER" ]; then
-  echo "Envrironment: $ENVIRONMENT without PIP"
 
-  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn test -e \
-    -DENVIRONMENT="$ENVIRONMENT" \
-    -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
-    -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
-    -D"$FILTER_TAGS"
+  AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION"
+
+  docker run "$RUN_ARGUMENT $AUTHENTICATION"
 
 else
   if [ -z "$IPIP_USER_AUTHENTICATION" ]; then
@@ -54,13 +55,9 @@ else
     exit 1;
   fi
 
-  echo "Envrironment: $ENVIRONMENT with PIP"
+  AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION \\
+    -DPIP_USER=$INPUT_PIP_USER -DPIP_AUTH=$PIP_USER_AUTHENTICATION"
 
-  docker run --rm -v "$PWD":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven "$INPUT_MAVEN_IMAGE" mvn test -e \
-    -DENVIRONMENT="$ENVIRONMENT" \
-    -DUSERNAME="$INPUT_USERNAME" -DUSER_AUTH="$USER_AUTHENTICATION" \
-    -DTEST_USER="$INPUT_TEST_USER" -DTEST_AUTH="$TEST_USER_AUTHENTICATION" \
-    -DPIP_USER="$INPUT_PIP_USER" -DPIP_AUTH="$PIP_USER_AUTHENTICATION" \
-    -D"$FILTER_TAGS"
+  docker run "$RUN_ARGUMENT $AUTHENTICATION"
 
 fi
