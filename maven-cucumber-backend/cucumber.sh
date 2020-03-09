@@ -68,4 +68,3 @@ else
 fi
 
 docker run `echo "$RUN_ARGUMENT $MAVEN_ARGUMENT $AUTHENTICATION"`
-''
