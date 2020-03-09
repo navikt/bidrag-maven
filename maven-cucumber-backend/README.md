@@ -12,7 +12,7 @@ The action requires four inputs, see action.yml:
 - the username of the nav user running the cucumber tests
 - the username of the test user used in the cucumber tests
 
-In addition to direct inputs, some environment variables must be provided:
+In addition to direct inputs, some environment variables must be provided (GITHUB.secrets):
 - USER_AUTHENTICATION: the password belonging to the user stated in the input
 - TEST_USER_AUTHENTICATION: the password belonging to the test user stated in the input
 
