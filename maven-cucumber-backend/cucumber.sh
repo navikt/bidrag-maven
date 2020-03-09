@@ -13,17 +13,24 @@ set -e
 
 cd "$RUNNER_WORKSPACE"
 
+FEATURE_BRANCH=feature
+
 echo "Working directory:"
 pwd
 
 sudo rm -rf bidrag-cucumber-backend
-git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
-cd bidrag-cucumber-backend
 
-if [ "$GITHUB_RECUCUMBER_F" != "refs/heads/master" ]; then
-  export ENVIRONMENT=q1
+if [ "$GITHUB_REF" != "refs/heads/master" ]; then
+  ENVIRONMENT=q1
+  IS_FEATURE=$(git ls-remote --heads https://github.com/navikt/bidrag-cucumber-backend $FEATURE_BRANCH | wc -l)
+  if [ $IS_FEATURE -eq 1 ]; then
+    git clone --depth 1 --branch=$FEATURE_BRANCH https://github.com/navikt/bidrag-cucumber-backend
+  else
+    git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
+  fi
 else
-  export ENVIRONMENT=q0
+  ENVIRONMENT=q0
+  git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
 fi
 
 if [ -z "$USER_AUTHENTICATION" ]; then
