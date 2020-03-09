@@ -3,7 +3,7 @@ set -e
 
 ############################################
 #
-# Følgende skjer i dette skriptet:
+# CUCUMBER_Følgende skjer i dette skriptet:
 # 1) cloner bidrag-cucumber-backend direkte til RUNNER_WORKSPACE (hvis denne finnes fra før, slettes den)
 # 2) setter q1 som miljø på feature brancher (q0 når master)
 # 3) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen
@@ -13,17 +13,24 @@ set -e
 
 cd "$RUNNER_WORKSPACE"
 
+FEATURE_BRANCH=feature
+
 echo "Working directory:"
 pwd
 
 sudo rm -rf bidrag-cucumber-backend
-git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
-cd bidrag-cucumber-backend
 
 if [ "$GITHUB_REF" != "refs/heads/master" ]; then
-  export ENVIRONMENT=q1
+  ENVIRONMENT=q1
+  IS_FEATURE=$(git ls-remote --heads https://github.com/navikt/bidrag-cucumber-backend $FEATURE_BRANCH | wc -l)
+  if [ $IS_FEATURE -eq 1 ]; then
+    git clone --depth 1 --branch=$FEATURE_BRANCH https://github.com/navikt/bidrag-cucumber-backend
+  else
+    git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
+  fi
 else
-  export ENVIRONMENT=q0
+  ENVIRONMENT=q0
+  git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
 fi
 
 if [ -z "$USER_AUTHENTICATION" ]; then
@@ -36,28 +43,24 @@ if [ -z "$TEST_USER_AUTHENTICATION" ]; then
   exit 1;
 fi
 
-FILTER_TAGS="cucmber.filter.tags='@$INPUT_CUCUMBER_TAG'"
+CUCUMBER_FILTER_TAGS="cucmber.filter.tags='@$INPUT_CUCUMBER_TAG'"
+RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn test"
+MAVEN_ARGUMENT="-e -DENVIRONMENT=$ENVIRONMENT -DUSERNAME=$INPUT_USERNAME -DTEST_USER=$INPUT_TEST_USER -D$CUCUMBER_FILTER_TAGS"
 
-RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn test -e -DENVIRONMENT=$ENVIRONMENT \\
-  -DUSERNAME=$INPUT_USERNAME -DTEST_USER=$INPUT_TEST_USER -D$FILTER_TAGS"
-
-echo "docker run without authentication: $RUN_ARGUMENT"
+echo "docker run: $RUN_ARGUMENT"
+echo "maven arg.: $MAVEN_ARGUMENT"
 
 if [ -z "$INPUT_PIP_USER" ]; then
-
   AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION"
-
-  docker run "$RUN_ARGUMENT $AUTHENTICATION"
-
 else
   if [ -z "$IPIP_USER_AUTHENTICATION" ]; then
-    >&2 echo "::error No PIP_USER_AUTHENTICATION for for the test user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+    >&2 echo "::error No PIP_USER_AUTHENTICATION for for the pip user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
     exit 1;
   fi
 
   AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION \\
     -DPIP_USER=$INPUT_PIP_USER -DPIP_AUTH=$PIP_USER_AUTHENTICATION"
 
-  docker run "$RUN_ARGUMENT $AUTHENTICATION"
-
 fi
+
+docker run `echo "$RUN_ARGUMENT $MAVEN_ARGUMENT $AUTHENTICATION"`
