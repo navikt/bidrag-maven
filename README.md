@@ -34,6 +34,7 @@ endres når man skal forandre logikk i "action".
 Versjon                   | Endringstype      | Beskrivelse
 --------------------------|-------------------|------------
 v1-maven-cucumber-backend | new release cycle | `maven-cucumber-backend`: nye inputs (se `action.yaml`), samt feature branch for cucumber 
+v5.1.1                    | Endret.           | `release-prepeare-mvn-pkg`: Error stacktrace, logging, and failure checking
 v5.1.0                    | Opprettet         | `maven-cucumber-backend`: action for å kjøre cucumber integration tests på en "self-hosted" GitHub Runner
 v5.0.0                    | Slettet/Endret    | `verify-mvn-dependencies` -> `maven-verify-dependencies`: docker image for maven, og feil hvis ikke kjøring er SUCCESS
 v5.0.0                    | Slettet/Opprettet | `setup-maven` -> `maven-setup`
