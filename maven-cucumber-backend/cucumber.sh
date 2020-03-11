@@ -58,7 +58,7 @@ if [ -z "$INPUT_PIP_USER" ]; then
   AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION"
 else
   if [ -z "$IPIP_USER_AUTHENTICATION" ]; then
-    >&2 echo "::error No PIP_USER_AUTHENTICATION for for the pip user are configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+    >&2 echo "::error No PIP_USER_AUTHENTICATION for for the pip user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
     exit 1;
   fi
 
