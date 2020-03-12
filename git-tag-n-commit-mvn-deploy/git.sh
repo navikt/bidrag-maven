@@ -19,7 +19,7 @@ then
 
     if [ -z $INPUT_TAG_MESSAGE ]
     then
-      >&2 echo "::error No message supplied for the tag!"
+      >&2 echo ::error No message supplied for the tag!
       exit 1;
     fi
 
@@ -29,7 +29,7 @@ then
     git tag -a "$TAG_CONTENT" -m "$INPUT_TAG_MESSAGE"
     git push origin "$TAG_CONTENT"
   else
-      >&2 echo "::error $INPUT_TAG_FILE is not present!"
+      >&2 echo ::error $INPUT_TAG_FILE is not present!
       exit 1;
   fi
 else
