@@ -1,18 +1,14 @@
 name: Tag and commit
 description: Create a tag and commits changes to the git repository
 inputs:
-  is_release_file:
-    description: file in the filesystem which will trigger action to perform a tag for a release version. if ommitted, no tagging will be done
-    required: false
+  is_release_candidate:
+    description: true/false determining if this is a release candidate (new deploy) or not
+    required: true
   commit_message:
     description: the commit message for any changes made by former actions
     required: true
-    default: "Changes made by GitHub actions"
   tag_message:
     description: the tag message for this release.
-    required: false
-  tag_file:
-    description: the name of the file containing the content of the tag which is used when releasing
     required: false
   pattern:
     description: the pattern to use with git add

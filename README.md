@@ -17,14 +17,15 @@ Andre sider ved design av disse "actions", er at de er laget for å kjøre samme
 
 #### Sterke koblinger mellom actions:
 
-Noen av actions har sterke koblinger i form av at de produserer filer som påvirker hvordan andre actions oppfører seg. For at filene som produseres
-skal være synlig av andre "actions", så må de være beskrevet i samme jobb.
+Noen av actions har sterke koblinger i form av at de produserer outputs som påvirker hvordan andre actions oppfører seg.
 
- sterke koblinger | beskrivelse 
-------------------|-------------
- `release-prepare-mvn-pkg` -> `release-verify-auto-deploy` | `release-prepare-mvn-pkg` lager fil til `release-verify-auto-deploy`
- `release-prepare-mvn-pkg` -> `release-mvn-pkg` | `release-prepare-mvn-pkg` lager fil til `release-mvn-pkg`
- `release-prepare-mvn-pkg` -> `git-tag-n-commit-mvn-deploy` | `release-prepare-mvn-pkg` lager fil til `git-tag-n-commit-mvn-deploy`
+ Produserer output | bruker output | beskrivelse 
+-------------------|---------------|------------
+ `release-prepare-mvn-pkg` | `release-verify-auto-deploy` |  output `release_version` 
+ `release-prepare-mvn-pkg` | `release-verify-auto-deploy` |  output `new_snapshot_version` 
+ `release-verify-auto-deployg` | `release-mvn-pkg` | output `is_release_candidate`
+ `release-verify-auto-deployg` | `release-mvn-pkg` | output `release_version`
+ `release-mvn-pkg` | `git-tag-n-commit-mvn-deploy` | `release-prepare-mvn-pkg` lager fil til `git-tag-n-commit-mvn-deploy`
 
 Det er lagt inn en workflow for å bygge alle actions med npm og ncc. Derfor er det bare filene `/<action>/index.js` og `/<action>/<bash>.sh` som skal
 endres når man skal forandre logikk i "action".
