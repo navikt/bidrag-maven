@@ -17,12 +17,6 @@ then
   git config --global user.email "$AUTHOR_EMAIL"
   git config --global user.name "$AUTHOR_NAME"
 
-  git diff status
-  echo "Commiting changes with commit message: $INPUT_COMMIT_MESSAGE"
-
-  git add "$INPUT_PATTERN"
-  git commit -m "$INPUT_COMMIT_MESSAGE"
-
   echo "Tagging new version with: $INPUT_RELEASE_VERSION"
 
   if [ -z $INPUT_TAG_MESSAGE ]
@@ -31,6 +25,11 @@ then
     exit 1;
   fi
 
+  echo "Commiting changes with commit message: $INPUT_COMMIT_MESSAGE"
+
+  git add "$INPUT_PATTERN"
+  git commit -m "$INPUT_COMMIT_MESSAGE"
+  git diff status
   git push
 
   echo "Tagging release with tag message: $INPUT_TAG_MESSAGE"
