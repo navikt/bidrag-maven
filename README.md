@@ -5,22 +5,20 @@ Github Actions spesialisert for team bidrag
 ![](https://github.com/navikt/bidrag-actions/workflows/build%20actions/badge.svg)
 
 ### Hovedregel for design:
-Alt blir utført av bash-scripter slik at det enkelt kan testes på reell kodebase uten å måtte bygge med github. Alle "actions" som trenger input får
-dette som form av tekst skrevet til enkle filer på filsystemet og dette angis som inputs til hver action (som blir oversatt til miljøvariabler i
-script)
+Alt blir utført av bash-scripter slik at det enkelt kan testes på reell kodebase uten å måtte bygge med github. Noen "actions" produserer "output" som
+må settes som inputs til hver action andre actions (se `action.yml` for en action)
 
 Utenom miljøvariabler for filnavn, så finnes også miljøvariabler for autentisering (når action trenger dette), eks: `GITHUB_TOKEN`, samt miljøvariabler
 for commit og tag meldinger i tag-and-commit action.
 
-Andre sider ved design av disse "actions", er at de er laget for å kjøre sammen. Dvs. at enkelte actions produserer filer som kan brukes av andre
-"actions". 
+Andre sider ved design av disse "actions", er at de er laget for å kjøre sammen. Dvs. at enkelte actions lager output som kan brukes av andre "actions". 
 
-#### Sterke koblinger mellom actions:
+#### Sterke koblinger mellom "actions":
 
-Noen av actions har sterke koblinger i form av at de produserer outputs som påvirker hvordan andre actions oppfører seg.
+Noen av "actions" har sterke koblinger i form av at de produserer outputs som påvirker hvordan andre actions oppfører seg.
 
- Produserer output | bruker output | beskrivelse 
--------------------|---------------|------------
+Produserer output | bruker output | beskrivelse 
+------------------|---------------|------------
  `release-prepare-mvn-pkg` | `release-verify-auto-deploy` |  output `release_version` 
  `release-prepare-mvn-pkg` | `release-verify-auto-deploy` |  output `new_snapshot_version` 
  `release-verify-auto-deployg` | `release-mvn-pkg` | output `is_release_candidate`
@@ -44,7 +42,7 @@ v1.0.1-maven | Endret            | `maven-cucumber-backend`: fix use of optional
 v1-maven     | new release cycle | `maven-cucumber-backend`: nye inputs (se `action.yaml`), samt feature branch for cucumber 
 v5.1.1       | Endret            | `release-prepeare-mvn-pkg`: Error stacktrace, logging, and failure checking
 v5.1.0       | Opprettet         | `maven-cucumber-backend`: action for å kjøre cucumber integration tests på en "self-hosted" GitHub Runner
-v5.0.0       | Slettet/Endret    | `verify-mvn-dependencies` -> `maven-verify-dependencies`: docker image for maven, og feil hvis ikke kjøring er SUCCESS
+v5.0.0       | Slettet/Endret    | `verify-mvn-dependencies` -> `maven-verify-dependencies`: docker image for maven, og feil når maven feiler
 v5.0.0       | Slettet/Opprettet | `setup-maven` -> `maven-setup`
 v4.0.7       | Endret            | `git-commit`: no echo statement
 v4.0.6       | Endret            | `release-prepare-mvn-pkg`: trimming whitespaces on release numbers
