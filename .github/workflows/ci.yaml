@@ -57,9 +57,8 @@ jobs:
       - name: Generate timestamp
         id: now
         run: echo ::set-output name=timestamp::$(date +"%Y-%m-%d:%T")
-      - run: echo ${{ steps.now.outputs.timestamp }}
       - name: Commit ncc build in bidrag-actions
-        uses: navikt/bidrag-actions/git-commit@feature-commit.no.file
+        uses: navikt/bidrag-actions/git-commit@feature-commit
         with:
           commit_message: "${{ steps.now.outputs.timestamp }}: Fresh build of actions with npm and ncc"
         env:
