@@ -5,26 +5,23 @@ Github Actions spesialisert for team bidrag
 ![](https://github.com/navikt/bidrag-actions/workflows/build%20actions/badge.svg)
 
 ### Hovedregel for design:
-Alt blir utført av bash-scripter slik at det enkelt kan testes på reell kodebase uten å måtte bygge med github. Alle "actions" som trenger input får
-dette som form av tekst skrevet til enkle filer på filsystemet og dette angis som inputs til hver action (som blir oversatt til miljøvariabler i
-script)
+Alt blir utført av bash-scripter slik at det enkelt kan testes på reell kodebase uten å måtte bygge med github. Noen "actions" produserer "output" som
+må settes som inputs til hver action andre actions (se `action.yml` for en action)
 
 Utenom miljøvariabler for filnavn, så finnes også miljøvariabler for autentisering (når action trenger dette), eks: `GITHUB_TOKEN`, samt miljøvariabler
 for commit og tag meldinger i tag-and-commit action.
 
-Andre sider ved design av disse "actions", er at de er laget for å kjøre sammen. Dvs. at enkelte actions produserer filer som kan brukes av andre
-"actions". 
+Andre sider ved design av disse "actions", er at de er laget for å kjøre sammen. Dvs. at enkelte actions lager output som kan brukes av andre "actions". 
 
-#### Sterke koblinger mellom actions:
+#### Sterke koblinger mellom "actions":
 
-Noen av actions har sterke koblinger i form av at de produserer filer som påvirker hvordan andre actions oppfører seg. For at filene som produseres
-skal være synlig av andre "actions", så må de være beskrevet i samme jobb.
+Noen av "actions" har sterke koblinger i form av at de produserer outputs som påvirker hvordan andre actions oppfører seg.
 
- sterke koblinger | beskrivelse 
-------------------|-------------
- `release-prepare-mvn-pkg` -> `release-verify-auto-deploy` | `release-prepare-mvn-pkg` lager fil til `release-verify-auto-deploy`
- `release-prepare-mvn-pkg` -> `release-mvn-pkg` | `release-prepare-mvn-pkg` lager fil til `release-mvn-pkg`
- `release-prepare-mvn-pkg` -> `git-tag-n-commit-mvn-deploy` | `release-prepare-mvn-pkg` lager fil til `git-tag-n-commit-mvn-deploy`
+produserer output             | output                 | actions som bruker output
+------------------------------|------------------------|--------------------------
+`release-prepare-mvn-pkg`     | `release_version`      | `release-mvn-pkg`, `release-verify-auto-deploy`, `release-git-tag-n-commit-deploy`
+`release-prepare-mvn-pkg`     | `new_snapshot_version` | `release-mvn-pkg`, `release-verify-auto-deploy` 
+`release-verify-auto-deployg` | `is_release_candidate` | `release-mvn-pkg`, `release-git-tag-n-commit-deploy`
 
 Det er lagt inn en workflow for å bygge alle actions med npm og ncc. Derfor er det bare filene `/<action>/index.js` og `/<action>/<bash>.sh` som skal
 endres når man skal forandre logikk i "action".
@@ -33,7 +30,7 @@ endres når man skal forandre logikk i "action".
 
 Versjon      | Endringstype      | Beskrivelse
 -------------|-------------------|------------
-v2-git.      | Endret.           | `git-commit`: push without sed communication with file system
+v2-git       | Endret            | `git-commit`: push without sed communication with file system
 v1.0.2-maven | Endret            | `maven-verify-dependencies`: ommit " when doing logging with the echo command
 v1-git       | Endret            | `git-tag`: ommit " when doing logging with the echo command 
 v1-git       | Endret            | `git-tag-n-commit-mvn-deploy`: ommit " when doing logging with the echo command 
@@ -44,7 +41,7 @@ v1.0.1-maven | Endret            | `maven-cucumber-backend`: fix use of optional
 v1-maven     | new release cycle | `maven-cucumber-backend`: nye inputs (se `action.yaml`), samt feature branch for cucumber 
 v5.1.1       | Endret            | `release-prepeare-mvn-pkg`: Error stacktrace, logging, and failure checking
 v5.1.0       | Opprettet         | `maven-cucumber-backend`: action for å kjøre cucumber integration tests på en "self-hosted" GitHub Runner
-v5.0.0       | Slettet/Endret    | `verify-mvn-dependencies` -> `maven-verify-dependencies`: docker image for maven, og feil hvis ikke kjøring er SUCCESS
+v5.0.0       | Slettet/Endret    | `verify-mvn-dependencies` -> `maven-verify-dependencies`: docker image for maven, og feil når maven feiler
 v5.0.0       | Slettet/Opprettet | `setup-maven` -> `maven-setup`
 v4.0.7       | Endret            | `git-commit`: no echo statement
 v4.0.6       | Endret            | `release-prepare-mvn-pkg`: trimming whitespaces on release numbers
