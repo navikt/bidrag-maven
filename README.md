@@ -19,9 +19,9 @@ Noen av "actions" har sterke koblinger i form av at de produserer outputs som p�
 
 produserer output             | output                 | actions som bruker output
 ------------------------------|------------------------|--------------------------
-`release-prepare-mvn-pkg`     | `release_version`      | `release-mvn-pkg`, `release-verify-auto-deploy`
+`release-prepare-mvn-pkg`     | `release_version`      | `release-mvn-pkg`, `release-verify-auto-deploy`, `release-git-tag-n-commit-deploy`
 `release-prepare-mvn-pkg`     | `new_snapshot_version` | `release-mvn-pkg`, `release-verify-auto-deploy` 
-`release-verify-auto-deployg` | `is_release_candidate` | `release-mvn-pkg`
+`release-verify-auto-deployg` | `is_release_candidate` | `release-mvn-pkg`, `release-git-tag-n-commit-deploy`
 
 Det er lagt inn en workflow for å bygge alle actions med npm og ncc. Derfor er det bare filene `/<action>/index.js` og `/<action>/<bash>.sh` som skal
 endres når man skal forandre logikk i "action".
@@ -30,7 +30,7 @@ endres når man skal forandre logikk i "action".
 
 Versjon      | Endringstype      | Beskrivelse
 -------------|-------------------|------------
-v2-git.      | Endret.           | `git-commit`: push without sed communication with file system
+v2-git       | Endret            | `git-commit`: push without sed communication with file system
 v1.0.2-maven | Endret            | `maven-verify-dependencies`: ommit " when doing logging with the echo command
 v1-git       | Endret            | `git-tag`: ommit " when doing logging with the echo command 
 v1-git       | Endret            | `git-tag-n-commit-mvn-deploy`: ommit " when doing logging with the echo command 
