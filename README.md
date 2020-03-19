@@ -30,6 +30,7 @@ endres når man skal forandre logikk i "action".
 
 Versjon      | Endringstype      | Beskrivelse
 -------------|-------------------|------------
+v2-git.      | Endret.           | `git-commit`: push without sed communication with file system
 v1.0.2-maven | Endret            | `maven-verify-dependencies`: ommit " when doing logging with the echo command
 v1-git       | Endret            | `git-tag`: ommit " when doing logging with the echo command 
 v1-git       | Endret            | `git-tag-n-commit-mvn-deploy`: ommit " when doing logging with the echo command 
