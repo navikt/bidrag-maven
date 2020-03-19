@@ -26,10 +26,6 @@ jobs:
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
           artifact_folder: bidrag-actions/git-tag
-      - name: Install git-tag-n-commit-mvn-deploy
-        uses: navikt/bidrag-actions/build-node-artifact@master
-        with:
-          artifact_folder: bidrag-actions/git-tag-n-commit-mvn-deploy
       - name: Install maven-cucumber-backend
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
@@ -50,6 +46,10 @@ jobs:
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
           artifact_folder: bidrag-actions/release-prepare-mvn-pkg
+      - name: Install release-tag-n-commit-deploy
+        uses: navikt/bidrag-actions/build-node-artifact@master
+        with:
+          artifact_folder: bidrag-actions/release-tag-n-commit-deploy
       - name: Install release-verify-auto-deploy
         uses: navikt/bidrag-actions/build-node-artifact@master
         with:
@@ -57,8 +57,7 @@ jobs:
       - name: Generate timestamp
         id: now
         run: echo ::set-output name=timestamp::$(date +"%Y-%m-%d:%T")
-      - name: Commit ncc build in bidrag-actions
-        uses: navikt/bidrag-actions/git-commit@v2-git
+      - uses: navikt/bidrag-actions/git-commit@v2-git
         with:
           commit_message: "${{ steps.now.outputs.timestamp }}: Fresh build of actions with npm and ncc"
         env:
