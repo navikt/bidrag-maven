@@ -55,10 +55,13 @@ jobs:
         with:
           artifact_folder: bidrag-actions/release-verify-auto-deploy
       - run: date +"%Y-%m-%d:%T" > .build-date
+      - name: Generate timestamp
+        id: now
+        run: echo ::set-output name=timestamp::$(cat .build-date)
+      - run: echo ${{ steps.now.outputs.timestamp }}
       - name: Commit ncc build in bidrag-actions
-        uses: navikt/bidrag-actions/git-commit@master
+        uses: navikt/bidrag-actions/git-commit@feature-commit.no.file
         with:
-          commit_message: "{}: Fresh build of actions with npm and ncc"
-          commit_message_file: .build-date
+          commit_message: "${{ steps.now.outputs.timestamp }}: Fresh build of actions with npm and ncc"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
