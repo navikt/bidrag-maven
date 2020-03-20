@@ -62,6 +62,6 @@ jobs:
       - uses: navikt/bidrag-actions/git-commit@v4.0.7
         with:
           commit_message: "${{ steps.now.outputs.timestamp }}: Fresh build of actions with npm and ncc"
-          pattern: "package.json"
+          pattern: "."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
