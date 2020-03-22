@@ -59,9 +59,9 @@ jobs:
       - name: Generate timestamp
         id: now
         run: echo ::set-output name=timestamp::$(date +"%Y-%m-%d:%T")
-      - uses: navikt/bidrag-actions/git-commit@v4.0.7
+      - uses: navikt/bidrag-actions/git-commit@v2.0.1-git
         with:
-          commit_message: "${{ steps.now.outputs.timestamp }}: Fresh build of actions with npm and ncc"
-          pattern: "."
+          commit_message: "\"${{ steps.now.outputs.timestamp }}: Build of actions with npm and ncc\""
+          pattern: .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
