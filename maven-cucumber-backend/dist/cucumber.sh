@@ -16,8 +16,6 @@ set -e
 
 cd "$RUNNER_WORKSPACE"
 
-FEATURE_BRANCH=feature
-
 echo "Working directory:"
 pwd
 
@@ -25,14 +23,19 @@ sudo rm -rf bidrag-cucumber-backend
 
 if [ "$GITHUB_REF" != "refs/heads/master" ]; then
   ENVIRONMENT=q1
+  FEATURE_BRANCH=$(echo "$GITHUB_REF" | sed 's;refs/heads/;;')
   IS_FEATURE=$(git ls-remote --heads https://github.com/navikt/bidrag-cucumber-backend $FEATURE_BRANCH | wc -l)
+
   if [ $IS_FEATURE -eq 1 ]; then
+    echo "Using feature branch: $FEATURE_BRANCH"
     git clone --depth 1 --branch=$FEATURE_BRANCH https://github.com/navikt/bidrag-cucumber-backend
   else
+  echo "Using /refs/heads/master"
     git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
   fi
 else
   ENVIRONMENT=q0
+  echo "Using /refs/heads/master"
   git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
 fi
 
