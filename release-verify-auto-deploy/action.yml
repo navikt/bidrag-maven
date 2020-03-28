@@ -1,0 +1,16 @@
+name: Verify auto deploy
+description: Verifies that the new commit contains at least one section in the changelog file that contains the version that is to be released
+inputs:
+  changelog_file:
+    description: the file containing the changelog for this release
+    required: true
+    default: README.md
+  release_version:
+    description: the release version
+    required: true
+outputs:
+  is_release_candidate:
+    description: true/false determining if this maven package can be deployed given release and changelog
+runs:
+  using: node12
+  main: dist/index.js

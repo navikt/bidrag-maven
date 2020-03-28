@@ -1,0 +1,18 @@
+name: Release maven package
+description: Releases a maven package on github
+inputs:
+  src_folder:
+    description: the name of a source folder to run the commands form
+    required: false
+  is_release_candidate:
+    description: true/false determining if this is a release candidate (new deploy) or not
+    required: true
+  new_snapshot_version:
+    description: the value of the new SNAPSHOT-version to use after release of current project object model (pom.xml for maven)
+    required: true
+  release_version:
+    description: the release version of the maven artifact
+    required: true
+runs:
+  using: node12
+  main: dist/index.js

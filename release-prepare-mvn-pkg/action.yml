@@ -1,0 +1,14 @@
+name: Prepare maven release
+description: Prepares release of a maven built project, writes preparations to files, see `release-prepare-mvn-pkg/README.md`
+inputs:
+  src_folder:
+    description: the name of a source folder to run the commands form
+    required: false
+outputs:
+  release_version:
+    description: the release version of the maven artifact
+  new_snapshot_version:
+    description: the new snapshot version (fulltext, ie 1.0.1-SNAPSHOT) for the artifact
+runs:
+  using: node12
+  main: dist/index.js

@@ -1,0 +1,15 @@
+name: Git tag
+description: Create a tag in a git repository
+inputs:
+  src_folder:
+    description: src folder for the git repository to tag
+    required: false
+  tag:
+    description: the new tag.
+    required: true
+  tag_message:
+    description: the tag message
+    required: true
+runs:
+  using: node12
+  main: dist/index.js
