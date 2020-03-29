@@ -17,15 +17,15 @@ jobs:
       - name: Debug workspace
         run: env
       - name: Install cucumber-backend
-        uses: navikt/bidrag-actions/build-node-artifact@master
-        with:
+        uses: navikt/bidrag-node/build-with-ncc@v1
+         with:
           artifact_folder: bidrag-maven/cucumber-backend
       - name: Install setup
-        uses: navikt/bidrag-actions/build-node-artifact@master
+        uses: navikt/bidrag-node/build-with-ncc@v1
         with:
           artifact_folder: bidrag-maven/setup
       - name: Install verify-dependencies
-        uses: navikt/bidrag-actions/build-node-artifact@master
+        uses: navikt/bidrag-node/build-with-ncc@v1
         with:
           artifact_folder: bidrag-maven/verify-dependencies
       - name: Generate timestamp
