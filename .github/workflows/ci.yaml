@@ -18,7 +18,7 @@ jobs:
         run: env
       - name: Install cucumber-backend
         uses: navikt/bidrag-node/build-with-ncc@v1
-         with:
+        with:
           artifact_folder: bidrag-maven/cucumber-backend
       - name: Install setup
         uses: navikt/bidrag-node/build-with-ncc@v1
