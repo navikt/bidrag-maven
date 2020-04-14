@@ -1,4 +1,4 @@
-# bidrag-actions/maven-cucumber-backend
+# bidrag-maven/cucumber-backend
 
 This action will checkout and run cucumber integration tests for bidrag-cucumber-backend. If a folder already exists for bidrag-dokument-backend, it
 will be deleted.
