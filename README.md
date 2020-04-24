@@ -16,6 +16,7 @@ endres når man skal forandre logikk i "action".
 
 Versjon | Endringstype      | Beskrivelse
 --------|-------------------|------------
+v1.0.5  | Endret            | la til credentials i settings.xml for github-package-registry-navikt
 v1.0.4  | Endret            | fjernet maven prefiks i action mapper
 v1.0.3  | Endret            | `maven-cucumber-backend`: will mirror feature-branch name when testing in namespace q1
 v1.0.2  | Endret            | `maven-verify-dependencies`: ommit " when doing logging with the echo command
