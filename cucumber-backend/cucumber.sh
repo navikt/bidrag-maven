@@ -96,7 +96,7 @@ if [[ "$INPUT_DO_NOT_FAIL" == "true" ]]; then
   SUPPRESS_EXIT_CODE="|| true"
 fi
 
-docker run "$RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENT $AUTHENTICATION $SUPPRESS_EXIT_CODE"
+docker run $(echo "$RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENT $AUTHENTICATION $SUPPRESS_EXIT_CODE" | sed "s/'//")
 
 if [[ -z "$INPUT_OPTIONAL_MAVEN_COMMAND" ]]; then
   echo no optional maven command are provided. additional command is not executed...
