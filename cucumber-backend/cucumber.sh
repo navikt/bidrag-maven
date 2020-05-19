@@ -104,5 +104,5 @@ docker run $(echo "$RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTI
 if [[ -z "$INPUT_OPTIONAL_MAVEN_COMMAND" ]]; then
   echo no optional maven command are provided. additional command is not executed...
 else
-  docker run $(echo "$RUN_ARGUMENT $INPUT_INPUT_OPTIONAL_MAVEN_COMMAND" | sed "s/'//")
+  docker run $(echo "$RUN_ARGUMENT $INPUT_OPTIONAL_MAVEN_COMMAND" | sed "s/'//")
 fi
