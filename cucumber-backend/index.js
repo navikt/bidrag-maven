@@ -11,7 +11,7 @@ async function run() {
 
     // Execute cucumber bash script
     await exec.exec(
-        `${__dirname}/cucumber.sh ${doNotFail} ${mavenCommand} ${mavenImage} ${testUser} ${username}`
+        `${__dirname}/../cucumber.sh ${doNotFail} ${mavenCommand} ${mavenImage} ${testUser} ${username}`
     );
   } catch (error) {
     core.setFailed(error.message);
