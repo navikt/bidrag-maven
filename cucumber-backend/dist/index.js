@@ -19,7 +19,13 @@ module.exports =
 /******/ 		};
 /******/
 /******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		var threw = true;
+/******/ 		try {
+/******/ 			modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 			threw = false;
+/******/ 		} finally {
+/******/ 			if(threw) delete installedModules[moduleId];
+/******/ 		}
 /******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
@@ -1494,13 +1500,22 @@ const exec = __webpack_require__(960);
 
 async function run() {
   try {
+    const doNotFail = core.getInput('do_not_fail');
+    const mavenCommand = core.getInput('maven_command');
+    const mavenImage = core.getInput('maven_image');
+    const testUser = core.getInput('test_user');
+    const username = core.getInput('username');
+
     // Execute cucumber bash script
-    await exec.exec(__webpack_require__.ab + "cucumber.sh");
+    await exec.exec(
+        `${__dirname}/../cucumber.sh ${doNotFail} ${mavenCommand} ${mavenImage} ${testUser} ${username}`
+    );
   } catch (error) {
     core.setFailed(error.message);
   }
 }
 
+// noinspection JSIgnoredPromiseFromCall
 run();
 
 
