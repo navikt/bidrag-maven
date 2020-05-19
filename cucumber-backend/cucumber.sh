@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 ############################################
 #
@@ -46,7 +46,11 @@ else
   git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
 fi
 
+echo move to cucumber tests
+pwd
 cd bidrag-cucumber-backend
+pwd
+ls -al
 
 if [ -z "$USER_AUTHENTICATION" ]; then
   >&2 echo "::error No USER_AUTHENTICATION (password) for a nav user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
