@@ -1,30 +1,35 @@
 #!/bin/bash
-set -e
+set -x
 
 ############################################
 #
 # Følgende skjer i dette skriptet:
-# 1) Sletter bidrag-cucumber-backend hvis den finnes i RUNNER_WORKSPACE fra før
-# 2a) Ved feature branch (ENVIRONMENT=q1)
+# 1) Velger rot-katalog for runner workspace når det er angitt
+# 2) Sletter bidrag-cucumber-backend hvis den finnes i RUNNER_WORKSPACE fra før
+# 3a) Ved feature branch (ENVIRONMENT=q1)
 #    - clone bidrag-cucumber-backend, branch=feature (hvis den finnes), hvis ikke brukes master
-# 2b) Ved master branch (ENVIRONMENT=q0)
+# 3b) Ved master branch (ENVIRONMENT=q0)
 #    - clone bidrag-cucumber-backend master
-# 3) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen (passord for nav-bruker og testbrukere)
-# 4) setter påkrevde input argumenter til script
-# 5a) INPUT_DO_NOT_FAIL != true
+# 4) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen (passord for nav-bruker og testbrukere)
+# 5) setter påkrevde input argumenter til script
+# 6a) INPUT_DO_NOT_FAIL != true
 #    - kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
 #      integeasjonstesting og reagerer på exit code fra maven kommando
-# 5b)  INPUT_DO_NOT_FAIL == true
+# 6b)  INPUT_DO_NOT_FAIL == true
 #    - kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
 #      integeasjonstesting uten å reagere på exit code fra maven kommando
-# 6) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
+# 7) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
 #
 ############################################
 
-cd "$RUNNER_WORKSPACE"
+if [ "$INPUT_RUN_FROM_WORKSPACE" == "true" ]; then
+  cd "$RUNNER_WORKSPACE"
+  eco "running from $PWD"
+fi
 
 echo "Working directory:"
 pwd
+env
 
 sudo rm -rf bidrag-cucumber-backend
 
