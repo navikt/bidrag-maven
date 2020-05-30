@@ -24,6 +24,10 @@ inputs:
   pip_user:
     description: The server user which is used in bidrag-sak
     required: false
+  run_from_workspace:
+    description: if the action should run from the workspace folder where the source code is checked out
+    required: false
+    default: "false"
   test_user:
     description: The test user which will be used running the scenarios in the integration tests
     required: true
