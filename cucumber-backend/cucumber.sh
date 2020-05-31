@@ -23,8 +23,8 @@ set -x
 ############################################
 
 if [ "$INPUT_RUN_FROM_WORKSPACE" == "true" ]; then
-  cd "$RUNNER_WORKSPACE"
-  eco "running from $PWD"
+  cd "$RUNNER_WORKSPACE" || exit;
+  echo "running from $PWD"
 fi
 
 echo "Working directory:"
@@ -53,7 +53,7 @@ fi
 
 echo move to cucumber tests
 pwd
-cd bidrag-cucumber-backend
+cd bidrag-cucumber-backend || exit 1;
 pwd
 ls -al
 
