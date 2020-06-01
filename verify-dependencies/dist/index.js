@@ -1541,7 +1541,7 @@ const exec = __webpack_require__(960);
 async function run() {
   try {
     // Execute verify bash script
-    await exec.exec(__webpack_require__.ab + "verify.sh");
+    await exec.exec(`${__dirname}/../verify.sh`);
   } catch (error) {
     core.setFailed(error.message);
   }
