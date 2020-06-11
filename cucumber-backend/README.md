@@ -24,8 +24,9 @@ When cucumber tag is @bidrag-sak, the following must also be provided:
 - a username for the pip user, (aka. `srv<user>`)
 - PIP_USER_AUTHENTICATION: the password for this server user (GITHUB.secret)
 
-When cucumber tag is for a new application which is not configured using `Fasit`, the following must be provided:
-- PROJECT_NAIS_FOLDER
-  * the file path to the configuration path to the nais folder where `nais/<environment>.json` is expected to be found
-  * the expected configuration is expected to be `<PROJECT_NAIS_FOLDER>/<application-name>/<q0/q1>.json`
-    * the application-name is supposed to be the same as the github project name
+When cucumber tag is for a new application which is not configured using `Fasit` one must use nais configuration
+- the file path to the configuration path to the nais folder where `<project>/nais/<environment>.json` will be checked
+  out to the `$RUNNER_WORKSPACE/simple`-folder 
+- the project where to run with simple configuration must contain a nais-configuration with the paths
+  `<application-name>/nais/<q0/q1>.json`
+  * cucumber will expect that the application-name is identical to be the github project name

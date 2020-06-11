@@ -24,9 +24,6 @@ inputs:
   pip_user:
     description: The server user which is used in bidrag-sak
     required: false
-  project_nais_folder:
-    description: the file path to the configuration path to the nais folder where `nais/<environment>.json` is expected to be found
-    required: false
   run_from_workspace:
     description: if the action should run from the workspace folder where the source code is checked out
     required: false
@@ -34,6 +31,10 @@ inputs:
   test_user:
     description: The test user which will be used running the scenarios in the integration tests
     required: true
+  use_nais_configuration:
+    description: the ingresses used to construct the context path for the application is gathered from <project>/nais/<q0, q1>.json
+    required: true
+    default: "false"
   username:
     description: The nav user which will be used to set up security for the integration tests
     required: true
