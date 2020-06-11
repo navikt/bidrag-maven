@@ -4,66 +4,34 @@ set -e
 ############################################
 #
 # Følgende skjer i dette skriptet:
-# 1) Velger rot-katalog for runner workspace når det er angitt
-# 2) Sletter bidrag-cucumber-backend hvis den finnes i RUNNER_WORKSPACE fra før
-# 3a) Ved feature branch (ENVIRONMENT=q1)
-#    - clone bidrag-cucumber-backend, branch=feature (hvis den finnes), hvis ikke brukes master
-# 3b) Ved master branch (ENVIRONMENT=q0)
-#    - clone bidrag-cucumber-backend master
-# 4) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen (passord for nav-bruker og testbrukere)
-# 5) setter påkrevde input argumenter til script
-# 6a) INPUT_DO_NOT_FAIL != true
-#    - kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
+# 1) går til bidrag-backend-cucumber hvis mappa finnes
+# 2) sjekker om miljøet har passord for nav-bruker og testbruker
+# 3) setter påkrevde input argumenter til script og lager ENVIRONMENT basert på hvilken branch som bygges
+# 4) - INPUT_DO_NOT_FAIL != true
+#      kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
 #      integeasjonstesting og reagerer på exit code fra maven kommando
-# 6b)  INPUT_DO_NOT_FAIL == true
-#    - kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
+#    - INPUT_DO_NOT_FAIL == true
+#      kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
 #      integeasjonstesting uten å reagere på exit code fra maven kommando
+# 5) legger til INPUT_PROJECT_NAIS_FOLDER som VM-parameter til maven (-DPROJECT_NAIS_FOLDER=<verdi>) hvis den er oppgitt
+# 6) Utfører mvn kommando med parametre som gitt
 # 7) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
 #
 ############################################
 
-if [ "$INPUT_RUN_FROM_WORKSPACE" == "true" ]; then
-  cd "$RUNNER_WORKSPACE" || exit;
-  echo "running from $PWD"
+if [[ -d bidrag-cucumber-backend ]]; then
+  echo goto bidrag-cucumber-backend
+  cd bidrag-cucumber-backend
+  pwd
 fi
 
-echo "Working directory:"
-pwd
-env
-
-sudo rm -rf bidrag-cucumber-backend
-
-if [ "$GITHUB_REF" != "refs/heads/master" ]; then
-  ENVIRONMENT=q1
-  FEATURE_BRANCH=$(echo "$GITHUB_REF" | sed 's;refs/heads/;;')
-  IS_FEATURE=$(git ls-remote --heads "https://github.com/navikt/bidrag-cucumber-backend $FEATURE_BRANCH" | wc -l)
-
-  if [ $IS_FEATURE -eq 1 ]; then
-    echo "Using feature branch: $FEATURE_BRANCH"
-    git clone --depth 1 --branch=$FEATURE_BRANCH https://github.com/navikt/bidrag-cucumber-backend
-  else
-  echo "Using /refs/heads/master"
-    git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
-  fi
-else
-  ENVIRONMENT=q0
-  echo "Using /refs/heads/master"
-  git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
-fi
-
-echo move to cucumber tests
-pwd
-cd bidrag-cucumber-backend || exit 1;
-pwd
-ls -al
-
-if [ -z "$USER_AUTHENTICATION" ]; then
-  >&2 echo "::error No USER_AUTHENTICATION (password) for a nav user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+if [[ -z "$USER_AUTHENTICATION" ]]; then
+  >&2 echo "::error No USER_AUTHENTICATION (password) for a nav user is configured, see bidrag-maven/cucumber-backend/README.md"
   exit 1;
 fi
 
-if [ -z "$TEST_USER_AUTHENTICATION" ]; then
-  >&2 echo "::error No TEST_USER_AUTHENTICATION for for the test user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
+if [[ -z "$TEST_USER_AUTHENTICATION" ]]; then
+  >&2 echo "::error No TEST_USER_AUTHENTICATION for for the test user is configured, see bidrag-maven/cucumber-backend/README.md"
   exit 1;
 fi
 
@@ -72,6 +40,12 @@ INPUT_MAVEN_COMMAND=$2
 INPUT_MAVEN_IMAGE=$3
 INPUT_TEST_USER=$4
 INPUT_USERNAME=$5
+
+if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
+  ENVIRONMENT=q1
+else
+  ENVIRONMENT=q0
+fi
 
 CUCUMBER_FILTER=""
 
@@ -85,18 +59,28 @@ SKIP_MAVEN_FAILURES=""
 
 if [[ "$INPUT_DO_NOT_FAIL" == "true" ]]; then
   SKIP_MAVEN_FAILURES="-Dmaven.test.failure.ignore=true"
+else
+  echo will fail if integrationstests have errors
+fi
+
+PROJECT_NAIS_FOLDER=""
+
+if [[ -z "$INPUT_PROJECT_NAIS_FOLDER" ]]; then
+  echo no project nais folder is provided...
+else
+  PROJECT_NAIS_FOLDER="-DPROJECT_NAIS_FOLDER=$INPUT_PROJECT_NAIS_FOLDER"
 fi
 
 RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v $HOME/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn"
-MAVEN_ARGUMENTS="-e -DENVIRONMENT=$ENVIRONMENT -DUSERNAME=$INPUT_USERNAME -DTEST_USER=$INPUT_TEST_USER $CUCUMBER_FILTER $SKIP_MAVEN_FAILURES"
+MAVEN_ARGUMENTS="-e -DENVIRONMENT=$ENVIRONMENT -DUSERNAME=$INPUT_USERNAME -DTEST_USER=$INPUT_TEST_USER $PROJECT_NAIS_FOLDER $CUCUMBER_FILTER $SKIP_MAVEN_FAILURES"
 
 echo "docker run: $RUN_ARGUMENT $INPUT_MAVEN_COMMAND"
 echo "maven args: $MAVEN_ARGUMENTS"
 
-if [ -z "$INPUT_PIP_USER" ]; then
+if [[ -z "$INPUT_PIP_USER" ]]; then
   AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION"
 else
-  if [ -z "$PIP_USER_AUTHENTICATION" ]; then
+  if [[ -z "$PIP_USER_AUTHENTICATION" ]]; then
     >&2 echo "::error No PIP_USER_AUTHENTICATION for for the pip user is configured, see bidrag-actions/maven-cucumber-bidrag/README.md"
     exit 1;
   fi
