@@ -46,10 +46,12 @@ sudo rm -rf bidrag-cucumber-backend
 
 if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
   FEATURE_BRANCH=${GITHUB_REF#refs/heads/}
-  IS_API_CHANGE=$(git ls-remote --heads "https://github.com/navikt/bidrag-cucumber-backend $FEATURE_BRANCH" | wc -l)
+  # shellcheck disable=SC2046
+  IS_API_CHANGE=$(git ls-remote --heads $(echo "https://github.com/navikt/bidrag-cucumber-backend $FEATURE_BRANCH" | sed "s/'//g") | wc -l)
 
   if [[ $IS_API_CHANGE -eq 1 ]]; then
     echo "Using feature branch: $FEATURE_BRANCH"
+    # shellcheck disable=SC2086
     git clone --depth 1 --branch=$FEATURE_BRANCH https://github.com/navikt/bidrag-cucumber-backend
   else
     echo "Using /refs/heads/master"

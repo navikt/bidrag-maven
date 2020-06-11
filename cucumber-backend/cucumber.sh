@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 ############################################
 #
@@ -22,9 +22,11 @@ set -e
 
 if [[ -d bidrag-cucumber-backend ]]; then
   echo goto bidrag-cucumber-backend
-  cd bidrag-cucumber-backend
-  pwd
+  cd bidrag-cucumber-backend || exit 1
 fi
+
+echo "running cucumber tests from $PWD"
+pwd
 
 if [[ -z "$USER_AUTHENTICATION" ]]; then
   >&2 echo ::error:: "No USER_AUTHENTICATION (password) for a nav user is configured"
@@ -94,10 +96,12 @@ else
   AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION -DPIP_USER=$INPUT_PIP_USER -DPIP_AUTH=$PIP_USER_AUTHENTICATION"
 fi
 
+# shellcheck disable=SC2046
 docker run $(echo "$RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION" | sed "s/'//")
 
 if [[ -z "$INPUT_OPTIONAL_MAVEN_COMMAND" ]]; then
   echo no optional maven command are provided. additional command is not executed...
 else
+  # shellcheck disable=SC2046
   docker run $(echo "$RUN_ARGUMENT $INPUT_OPTIONAL_MAVEN_COMMAND" | sed "s/'//")
 fi
