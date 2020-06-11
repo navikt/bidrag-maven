@@ -4,29 +4,31 @@ set -x
 ############################################
 #
 # Følgende skjer i dette skriptet:
-# 1) går til bidrag-backend-cucumber hvis mappa finnes
+# 1) setter input argumenter
 # 2) sjekker om miljøet har passord for nav-bruker og testbruker
-# 3) setter påkrevde input argumenter til script og lager ENVIRONMENT basert på hvilken branch som bygges
-# 4) - INPUT_DO_NOT_FAIL != true
+# 3) går til $RUNNER_WORKSPACE hvis angitt og går til bidrag-backend-cucumber hvis mappa finnes
+# 4) setter påkrevde input argumenter til script og lager ENVIRONMENT basert på hvilken branch som bygges
+# 5) - INPUT_DO_NOT_FAIL != true
 #      kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
 #      integeasjonstesting og feiler hvis det er fail i integrasjonstestene
 #    - INPUT_DO_NOT_FAIL == true
 #      kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
 #      integeasjonstesting uten å feile ved testfeil
-# 5) legger til variabel for nais konfigurasjon med maven (-DPROJECT_NAIS_FOLDER=$RUNNER_WORKSPACE/simple) man
+# 6) legger til variabel for nais konfigurasjon med maven (-DPROJECT_NAIS_FOLDER=$RUNNER_WORKSPACE/simple) man
 #    skal bruke nais konfigurasjon
-# 6) Utfører mvn kommando med parametre som gitt
-# 7) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
+# 7) Utfører mvn kommando med parametre som gitt
+# 8) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
 #
 ############################################
 
-if [[ -d bidrag-cucumber-backend ]]; then
-  echo goto bidrag-cucumber-backend
-  cd bidrag-cucumber-backend || exit 1
-fi
-
-echo "running cucumber tests from $PWD"
-pwd
+INPUT_CUCUMBER_TAG=$1
+INPUT_DO_NOT_FAIL=$2
+INPUT_MAVEN_COMMAND=$3
+INPUT_MAVEN_IMAGE=$4
+INPUT_RUN_FROM_WORKSPACE=$5
+INPUT_TEST_USER=$6
+INPUT_USE_NAIS_CONFIGURATION=$7
+INPUT_USERNAME=$8
 
 if [[ -z "$USER_AUTHENTICATION" ]]; then
   >&2 echo ::error:: "No USER_AUTHENTICATION (password) for a nav user is configured"
@@ -40,13 +42,17 @@ if [[ -z "$TEST_USER_AUTHENTICATION" ]]; then
   exit 1;
 fi
 
-INPUT_CUCUMBER_TAG=$1
-INPUT_DO_NOT_FAIL=$2
-INPUT_MAVEN_COMMAND=$3
-INPUT_MAVEN_IMAGE=$4
-INPUT_TEST_USER=$5
-INPUT_USE_NAIS_CONFIGURATION=$6
-INPUT_USERNAME=$7
+if [ "$INPUT_RUN_FROM_WORKSPACE" == "true" ]; then
+  cd "$RUNNER_WORKSPACE" || exit 1;
+fi
+
+if [[ -d bidrag-cucumber-backend ]]; then
+  echo goto bidrag-cucumber-backend
+  cd bidrag-cucumber-backend || exit 1
+fi
+
+echo "running cucumber tests from $PWD"
+pwd
 
 if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
   ENVIRONMENT=q1

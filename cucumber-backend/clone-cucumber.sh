@@ -20,7 +20,7 @@ INPUT_USE_NAIS_CONFIGURATION=$1
 INPUT_RUN_FROM_WORKSPACE=$2
 
 if [ "$INPUT_RUN_FROM_WORKSPACE" == "true" ]; then
-  cd "$RUNNER_WORKSPACE" || exit;
+  cd "$RUNNER_WORKSPACE" || exit 1;
 fi
 
 if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
