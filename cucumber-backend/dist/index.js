@@ -1560,7 +1560,7 @@ async function run() {
       // Execute cucumber bash script
       await exec.exec(
           `${__dirname}/../cucumber.sh`,
-          [cucumberTag, doNotFail, mavenCommand, mavenImage, testUser, useNaisConfiguration, username]
+          [cucumberTag, doNotFail, mavenCommand, mavenImage, runFromWorkspace, testUser, useNaisConfiguration, username]
       );
     }
   } catch (error) {
