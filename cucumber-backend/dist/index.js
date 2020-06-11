@@ -1540,16 +1540,22 @@ const exec = __webpack_require__(960);
 
 async function run() {
   try {
-    const doNotFail = core.getInput('do_not_fail');
-    const mavenCommand = core.getInput('maven_command');
-    const mavenImage = core.getInput('maven_image');
-    const testUser = core.getInput('test_user');
-    const username = core.getInput('username');
+    // Execute clone bash script to setup running bidrag-cucumber-backend
+    const exitCode = await exec.exec(`${__dirname}/../clone-cucumber.sh`);
 
-    // Execute cucumber bash script
-    await exec.exec(
-        `${__dirname}/../cucumber.sh ${doNotFail} ${mavenCommand} ${mavenImage} ${testUser} ${username}`
-    );
+    if (exitCode === 0) {
+      const doNotFail = core.getInput('do_not_fail');
+      const mavenCommand = core.getInput('maven_command');
+      const mavenImage = core.getInput('maven_image');
+      const testUser = core.getInput('test_user');
+      const username = core.getInput('username');
+
+      // Execute cucumber bash script
+      await exec.exec(
+          `${__dirname}/../cucumber.sh`,
+          [doNotFail, mavenCommand, mavenImage, testUser, username]
+      );
+    }
   } catch (error) {
     core.setFailed(error.message);
   }
