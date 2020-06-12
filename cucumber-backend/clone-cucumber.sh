@@ -23,20 +23,6 @@ if [ "$INPUT_RUN_FROM_WORKSPACE" == "true" ]; then
   cd "$RUNNER_WORKSPACE" || exit 1;
 fi
 
-if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
-  CLONE_CUCUMBER_FOLDER=$PWD
-  SIMPLE="$RUNNER_WORKSPACE/simple"
-
-  sudo rm -rf "$SIMPLE"
-  mkdir "$SIMPLE"
-  cd "$SIMPLE" || exit 1;
-
-  git clone --depth 1 "https://github.com/navikt/bidrag-hendelse-producer"
-  find . -type f -name "q*.json"
-
-  cd "$CLONE_CUCUMBER_FOLDER" || exit 1;
-fi
-
 echo "Working directory:"
 pwd
 
@@ -58,4 +44,21 @@ if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
 else
   echo "Using /refs/heads/master"
   git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
+fi
+
+# gå til bidrag-dokument-cucumber slik at json filene blir synlige i docker container når ingegrasjonstestene gjøres
+cd bidrag-dokument-cucumber || exit 1;
+
+if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
+  CLONE_CUCUMBER_FOLDER=$PWD
+  SIMPLE="$PWD/simple"
+
+  sudo rm -rf "$SIMPLE"
+  mkdir "$SIMPLE"
+  cd "$SIMPLE" || exit 1;
+
+  git clone --depth 1 "https://github.com/navikt/bidrag-hendelse-producer"
+  find . -type f -name "q*.json"
+
+  cd "$CLONE_CUCUMBER_FOLDER" || exit 1;
 fi
