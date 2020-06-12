@@ -14,7 +14,7 @@ set -e
 #    - INPUT_DO_NOT_FAIL == true
 #      kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
 #      integeasjonstesting uten å feile ved testfeil
-# 6) legger til variabel for nais konfigurasjon med maven (-DPROJECT_NAIS_FOLDER=$PWD/simple) når cucumber testing
+# 6) legger til variabel for nais konfigurasjon med maven (-DPROJECT_NAIS_FOLDER/usr/src/mymaven/simple) når testing
 #    skal bruke nais konfigurasjon
 # 7) Utfører mvn kommando med parametre som gitt
 # 8) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
@@ -81,7 +81,7 @@ PROJECT_NAIS_FOLDER=""
 if [[ -z "$INPUT_USE_NAIS_CONFIGURATION" ]]; then
   echo will find configuration from fasit...
 else
-  PROJECT_NAIS_FOLDER="-DPROJECT_NAIS_FOLDER=$PWD/simple"
+  PROJECT_NAIS_FOLDER="-DPROJECT_NAIS_FOLDER=/usr/src/mymaven/simple"
 fi
 
 RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v $HOME/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn"
