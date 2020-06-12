@@ -31,11 +31,8 @@ if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
   mkdir "$SIMPLE"
   cd "$SIMPLE" || exit 1;
 
-  git clone -n --depth 1 "https://github.com/navikt/bidrag-hendelse-producer"
-  cd bidrag-hendelse-producer || exit 1;
-  git checkout HEAD nais/q0.json
-  git checkout HEAD nais/q1.json
-  echo "Files: $(ls), are chedked out at $PWD"
+  git clone --depth 1 "https://github.com/navikt/bidrag-hendelse-producer"
+  find . -type f -name "q*.json"
 
   cd "$CLONE_CUCUMBER_FOLDER" || exit 1;
 fi
