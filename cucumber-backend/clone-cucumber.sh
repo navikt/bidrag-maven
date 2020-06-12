@@ -1,10 +1,10 @@
 #!/bin/bash
-set -e
+set -x
 
 ############################################
 #
 # Følgende skjer i dette skriptet:
-# 1) setter input til script
+# 1) setter input til scriptq
 # 2) går til runner workspace hvis true
 # 3) når USE_NAIS_CONFIGURATION er true, lages mappa simple hvor <project>/nais/<q0/q1>.json sjekkes ut
 # 4) sletter bidrag-cucumber-backend hvis den finnes fra før
@@ -31,8 +31,8 @@ if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
   mkdir "$SIMPLE"
   cd "$SIMPLE" || exit 1;
 
-  git clone -n --depth 1 "https://github.com/$GITHUB_REPOSITORY"
-  cd "${GITHUB_REPOSITORY#navikt/}" || exit 1;
+  git clone -n --depth 1 "https://github.com/navikt/bidrag-hendelse-producer"
+  cd bidrag-hendelse-producer || exit 1;
   git checkout HEAD nais/q0.json
   git checkout HEAD nais/q1.json
 
