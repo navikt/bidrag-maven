@@ -35,6 +35,7 @@ if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
   cd bidrag-hendelse-producer || exit 1;
   git checkout HEAD nais/q0.json
   git checkout HEAD nais/q1.json
+  echo "Files: $(ls), are chedked out at $PWD"
 
   cd "$CLONE_CUCUMBER_FOLDER" || exit 1;
 fi
