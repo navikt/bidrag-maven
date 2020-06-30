@@ -46,7 +46,7 @@ else
   git clone --depth 1 https://github.com/navikt/bidrag-cucumber-backend
 fi
 
-# gå til bidrag-cucumber-backend slik at json filene blir synlige i docker container når ingegrasjonstestene gjøres
+# gå til bidrag-cucumber-backend slik at json filene blir synlige i docker container når integrasjonstestene gjøres
 cd bidrag-cucumber-backend || exit 1;
 
 if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
