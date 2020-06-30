@@ -6,13 +6,13 @@ set -e
 # Følgende skjer i dette skriptet:
 # 1) setter input til scriptq
 # 2) går til runner workspace hvis true
-# 3) når USE_NAIS_CONFIGURATION er true, lages mappa simple hvor <project>/nais/<q0/q1>.json sjekkes ut
-# 4) sletter bidrag-cucumber-backend hvis den finnes fra før
-# 5a) ved feature branch
+# 3) sletter bidrag-cucumber-backend hvis den finnes fra før
+# 4a) ved feature branch
 #    - clone bidrag-cucumber-backend, branch=feature (hvis den finnes), hvis ikke brukes master
-# 5b) ved master branch
+# 4b) ved master branch
 #    - clone bidrag-cucumber-backend master
-# 6) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen (passord for nav-bruker og testbrukere)
+# 5) sjekker om vi har all konfigurasjon som trengs til integrasjonstestingen (passord for nav-bruker og testbrukere)
+# 6) når USE_NAIS_CONFIGURATION er true, lages mappa simple hvor <project>/nais/<q0/q1>.json sjekkes ut
 #
 ############################################
 
