@@ -49,7 +49,7 @@ fi
 # gå til bidrag-cucumber-backend slik at json filene blir synlige i docker container når integrasjonstestene gjøres
 cd bidrag-cucumber-backend || exit 1;
 
-if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
+if [[ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]]; then
   CLONE_CUCUMBER_FOLDER=$PWD
   SIMPLE="$PWD/simple"
 
@@ -57,7 +57,17 @@ if [ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]; then
   mkdir "$SIMPLE"
   cd "$SIMPLE" || exit 1;
 
-  git clone --depth 1 "https://github.com/navikt/bidrag-hendelse-producer"
+  if [[ "navikt/bidrag-hendelse-producer" == "$GITHUB_REPOSITORY" ]]; then
+    git clone --depth 1 "--branch=$FEATURE_BRANCH" https://github.com/navikt/bidrag-hendelse-producer
+  else
+    if [[ "navikt/bidrag-hendelse" == "$GITHUB_REPOSITORY" ]]; then
+      git clone --depth 1 https://github.com/navikt/bidrag-hendelse
+    else
+      git clone --depth 1 https://github.com/navikt/bidrag-hendelse-producer
+      git clone --depth 1 https://github.com/navikt/bidrag-hendelse
+    fi
+  fi
+
   find . -type f -name "q*.json"
 
   cd "$CLONE_CUCUMBER_FOLDER" || exit 1;
