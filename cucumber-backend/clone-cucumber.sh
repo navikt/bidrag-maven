@@ -50,17 +50,9 @@ fi
 cd bidrag-cucumber-backend || exit 1;
 
 if [[ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]]; then
-  CLONE_CUCUMBER_FOLDER=$PWD
-  SIMPLE="$PWD/simple"
-
-  sudo rm -rf "$SIMPLE"
-  mkdir "$SIMPLE"
-  cd "$SIMPLE" || exit 1;
-
-  git clone --depth 1 https://github.com/navikt/bidrag-hendelse-producer
-  git clone --depth 1 https://github.com/navikt/bidrag-hendelse
+  sudo rm -rf simple
+  mkdir simple
+  cp -r "$RUNNER_WORKSPACE/../nais-apps/*" "simple/."
 
   find . -type f -name "q*.json"
-
-  cd "$CLONE_CUCUMBER_FOLDER" || exit 1;
 fi
