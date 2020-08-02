@@ -57,16 +57,8 @@ if [[ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]]; then
   mkdir "$SIMPLE"
   cd "$SIMPLE" || exit 1;
 
-  if [[ "navikt/bidrag-hendelse-producer" == "$GITHUB_REPOSITORY" ]]; then
-    git clone --depth 1 "--branch=$FEATURE_BRANCH" https://github.com/navikt/bidrag-hendelse-producer
-  else
-    if [[ "navikt/bidrag-hendelse" == "$GITHUB_REPOSITORY" ]]; then
-      git clone --depth 1 https://github.com/navikt/bidrag-hendelse
-    else
-      git clone --depth 1 https://github.com/navikt/bidrag-hendelse-producer
-      git clone --depth 1 https://github.com/navikt/bidrag-hendelse
-    fi
-  fi
+  git clone --depth 1 https://github.com/navikt/bidrag-hendelse-producer
+  git clone --depth 1 https://github.com/navikt/bidrag-hendelse
 
   find . -type f -name "q*.json"
 
