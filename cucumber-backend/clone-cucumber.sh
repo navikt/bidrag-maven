@@ -50,9 +50,26 @@ fi
 cd bidrag-cucumber-backend || exit 1;
 
 if [[ "$INPUT_USE_NAIS_CONFIGURATION" == "true" ]]; then
-  sudo rm -rf simple
-  mkdir simple
-  cp -r "$RUNNER_WORKSPACE/../nais-apps/*" "simple/."
+  SIMPLE="$PWD/simple"
+
+  sudo rm -rf "$SIMPLE"
+  mkdir "$SIMPLE"
+  mkdir "$SIMPLE/bidrag-hendelse"
+  mkdir "$SIMPLE/bidrag-hendelse/nais"
+  cd "$SIMPLE" || exit 1
+
+  git clone --depth 1 "https://github.com/navikt/bidrag-hendelse-producer"
+
+  echo "{
+  "namespace": "default",
+  "ingress_preprod": "https://bidrag-hendelse.nais.preprod.local/",
+  "ingress_nais": "https://bidrag-hendelse.dev-fss.nais.io/"
+}" > "$SIMPLE/bidrag-hendelse/nais/q0.json"
+  echo "{
+  "namespace": "q1",
+  "ingress_preprod": "https://bidrag-hendelse-q1.nais.preprod.local/",
+  "ingress_nais": "https://bidrag-hendelse-q1.dev-fss.nais.io/"
+}" > "$SIMPLE/bidrag-hendelse/nais/q1.json"
 
   find . -type f -name "q*.json"
 fi
