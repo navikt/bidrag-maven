@@ -6,7 +6,8 @@ set -x
 # Følgende skjer i dette skriptet:
 # 1) setter input argumenter
 # 2) sjekker om miljøet har passord for nav-bruker og testbruker
-# 3) går til $RUNNER_WORKSPACE hvis angitt og går til bidrag-backend-cucumber hvis mappa finnes
+# 3) går til $RUNNER_WORKSPACE og finner bidrag-cucumber-backend/pom.xml slik at man finner riktig workspace
+#    som inneholder cucumber-koden
 # 4) setter påkrevde input argumenter til script og lager ENVIRONMENT basert på hvilken branch som bygges
 # 5) - INPUT_DO_NOT_FAIL != true
 #      kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
@@ -14,8 +15,7 @@ set -x
 #    - INPUT_DO_NOT_FAIL == true
 #      kjører mvn INPUT_MAVEN_COMMAND -e på bidrag-cucumber-backend i et docker image med all konfigurasjon for
 #      integeasjonstesting uten å feile ved testfeil
-# 6) legger til variabel for nais konfigurasjon med maven (-DPROJECT_NAIS_FOLDER/usr/src/mymaven/simple) når testing
-#    skal bruke nais konfigurasjon
+# 6) legger til variabel for nais konfigurasjon med maven (-DPROJECT_NAIS_FOLDER/usr/src/mymaven/simple)
 # 7) Utfører mvn kommando med parametre som gitt
 # 8) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
 #
@@ -25,9 +25,8 @@ INPUT_CUCUMBER_TAG=$1
 INPUT_DO_NOT_FAIL=$2
 INPUT_MAVEN_COMMAND=$3
 INPUT_MAVEN_IMAGE=$4
-INPUT_RUN_FROM_WORKSPACE=$5
-INPUT_TEST_USER=$6
-INPUT_USERNAME=$7
+INPUT_TEST_USER=$5
+INPUT_USERNAME=$6
 
 if [[ -z "$USER_AUTHENTICATION" ]]; then
   >&2 echo ::error:: "No USER_AUTHENTICATION (password) for a nav user is configured"
@@ -41,18 +40,14 @@ if [[ -z "$TEST_USER_AUTHENTICATION" ]]; then
   exit 1;
 fi
 
-if [ "$INPUT_RUN_FROM_WORKSPACE" == "true" ]; then
-  cd "$RUNNER_WORKSPACE" || exit 1;
-  pwd
-  ls -la
-  find . -type f -name "q*.json"
-fi
+cd "$RUNNER_WORKSPACE" || exit 1;
+pwd
+ls -la
+echo goto bidrag-cucumber-backend
+FOLDER=$(find . -type f -name "pom.xml" | grep bidrag-cucumber-backend/pom.xml | sed 's;./;;' | sed 's;/pom.xml;;')
+cd "$FOLDER" || exit 1
 
-if [[ -d bidrag-cucumber-backend ]]; then
-  echo goto bidrag-cucumber-backend
-  cd bidrag-cucumber-backend || exit 1
-fi
-
+find . -type f -name "q*.json"
 echo "running cucumber tests from $PWD"
 pwd
 
