@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 ############################################
 #
@@ -27,8 +27,7 @@ INPUT_MAVEN_COMMAND=$3
 INPUT_MAVEN_IMAGE=$4
 INPUT_RUN_FROM_WORKSPACE=$5
 INPUT_TEST_USER=$6
-INPUT_USE_NAIS_CONFIGURATION=$7
-INPUT_USERNAME=$8
+INPUT_USERNAME=$7
 
 if [[ -z "$USER_AUTHENTICATION" ]]; then
   >&2 echo ::error:: "No USER_AUTHENTICATION (password) for a nav user is configured"
@@ -44,6 +43,9 @@ fi
 
 if [ "$INPUT_RUN_FROM_WORKSPACE" == "true" ]; then
   cd "$RUNNER_WORKSPACE" || exit 1;
+  pwd
+  ls -la
+  find . -type f -name "q*.json"
 fi
 
 if [[ -d bidrag-cucumber-backend ]]; then
@@ -76,13 +78,7 @@ else
   echo will fail if integrationstests have errors
 fi
 
-PROJECT_NAIS_FOLDER=""
-
-if [[ -z "$INPUT_USE_NAIS_CONFIGURATION" ]]; then
-  echo will find configuration from fasit...
-else
-  PROJECT_NAIS_FOLDER="-DPROJECT_NAIS_FOLDER=/usr/src/mymaven/simple"
-fi
+PROJECT_NAIS_FOLDER="-DPROJECT_NAIS_FOLDER=/usr/src/mymaven/simple"
 
 RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v $HOME/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn"
 MAVEN_ARGUMENTS="-e -DENVIRONMENT=$ENVIRONMENT -DUSERNAME=$INPUT_USERNAME -DTEST_USER=$INPUT_TEST_USER $PROJECT_NAIS_FOLDER $CUCUMBER_FILTER $SKIP_MAVEN_FAILURES"

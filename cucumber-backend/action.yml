@@ -31,10 +31,6 @@ inputs:
   test_user:
     description: The test user which will be used running the scenarios in the integration tests
     required: true
-  use_nais_configuration:
-    description: the ingresses used to construct the context path for the application is gathered from <project>/nais/<q0, q1>.json
-    required: true
-    default: "false"
   username:
     description: The nav user which will be used to set up security for the integration tests
     required: true
