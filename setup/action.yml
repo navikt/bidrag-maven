@@ -1,5 +1,5 @@
-name: Build maven application
-description: Builds a maven application and uses github token to authorize for reading github packages
+name: Set up build with github
+description: Sets up builds of a maven applications which uses github token to authorize for reading github packages
 runs:
   using: node12
   main: dist/index.js
