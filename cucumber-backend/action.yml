@@ -9,11 +9,15 @@ inputs:
     required: false
   do_not_fail:
     description: The cucumber integration test suite should not cause a workflow failure when tests have errors
-    required: false
+    required: true
     default: "false"
+  github_project:
+    description: The name of the cucumber github project
+    required: true
+    default: bidrag-cucumber-backend
   maven_command:
     description: The command used to run tests with maven
-    required: false
+    required: true
     default: test
   optional_maven_command:
     description: An optional maven command
