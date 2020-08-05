@@ -16,6 +16,8 @@ endres når man skal forandre logikk i "action".
 
 Versjon | Endringstype      | Beskrivelse
 --------|-------------------|------------
+v3.0.1  | Endret            | `cucumber-backend`: streamlined for cucumber-testing of simple repository and use of navikt/bidrag-integration/cucumber-clone
+v3.0.0  | Endret            | `cucumber-backend`: run cucumber without cloning and with nais configuration 
 v2.1.2  | Endret            | `verify-dependencies`: new action core and run `verify.sh` from sub directory
 v2.1.1  | Endret            | `cucumber-backend`: new action core and fix of echo statement
 v2.1.0  | Endret            | `cucumber-backend`: run from workspace true/false
