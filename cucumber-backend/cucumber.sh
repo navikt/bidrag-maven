@@ -1,13 +1,12 @@
 #!/bin/bash
-set -x
+set -e
 
 ############################################
 #
 # Følgende skjer i dette skriptet:
 # 1) setter input argumenter
 # 2) sjekker om miljøet har passord for nav-bruker og testbruker
-# 3) går til $RUNNER_WORKSPACE og finner <cucumber-github project>/pom.xml slik at man finner riktig workspace
-#    som inneholder cucumber-koden
+# 3) går til $RUNNER_WORKSPACE og til $INPUT_CUCUMBER_PROJECT for å nå cucumber koden
 # 4) setter påkrevde input argumenter til script og lager ENVIRONMENT basert på hvilken branch som bygges
 # 5) - INPUT_DO_NOT_FAIL != true
 #      kjører mvn INPUT_MAVEN_COMMAND -e på <cucumber-github project> i et docker image med all konfigurasjon for
