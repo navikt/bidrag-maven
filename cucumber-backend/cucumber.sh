@@ -43,8 +43,7 @@ cd "$RUNNER_WORKSPACE" || exit 1;
 pwd
 ls -la
 echo "goto $INPUT_CUCUMBER_PROJECT"
-FOLDER=$(find . -type f -name "pom.xml" | grep "$INPUT_CUCUMBER_PROJECT/pom.xml" | sed 's;./;;' | sed 's;/pom.xml;;')
-cd "$FOLDER" || exit 1
+cd "$INPUT_CUCUMBER_PROJECT" || exit 1
 
 find . -type f -name "q*.json"
 echo "running cucumber tests from $PWD"
