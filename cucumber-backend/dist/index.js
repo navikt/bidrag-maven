@@ -1542,6 +1542,7 @@ async function run() {
   try {
     const cucumberTag = core.getInput('cucumber_tag');
     const doNotFail = core.getInput('do_not_fail');
+    const githubProj = core.getInput('github_project');
     const mavenCommand = core.getInput('maven_command');
     const mavenImage = core.getInput('maven_image');
     const testUser = core.getInput('test_user');
@@ -1550,7 +1551,10 @@ async function run() {
     // Execute cucumber bash script
     await exec.exec(
         `${__dirname}/../cucumber.sh`,
-        [cucumberTag, doNotFail, mavenCommand, mavenImage, testUser, username]
+        [
+          cucumberTag, doNotFail, githubProj, mavenCommand, mavenImage,
+          testUser, username
+        ]
     );
   } catch (error) {
     core.setFailed(error.message);

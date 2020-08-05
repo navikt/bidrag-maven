@@ -16,6 +16,10 @@ jobs:
       - run: npm i -g @zeit/ncc
       - name: Debug workspace
         run: env
+      - name: Install cucumber-backend
+        uses: navikt/bidrag-node/build-with-ncc@v1
+        with:
+          artifact_folder: bidrag-maven/cucumber-backend
       - name: Install setup
         uses: navikt/bidrag-node/build-with-ncc@v1
         with:
