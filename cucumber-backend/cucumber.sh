@@ -48,7 +48,7 @@ find . -type f -name "q*.json"
 echo "running cucumber tests from $PWD"
 pwd
 
-if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
+if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
   ENVIRONMENT=q1
 else
   ENVIRONMENT=q0
