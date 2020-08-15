@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -e
 
 ######################################################################################
 #
@@ -11,10 +11,10 @@ set -x
 # Følgende skjer i dette skriptet:
 # 1) setter inputs og leser kommaseparert liste inn i array
 # 2) for hvert innslag i den kommaseparerte lista
-#    - lag en <server>...</server> element
+#    - lag et <server>...</server> element
 #    - lag et <repository>...</repository> element
 # 3) legg til server og repository elementene i en settings.xml
-# 4) skriver den genererte settings.xml til k
+# 4) skriver den genererte settings.xml til maven home
 #
 ######################################################################################
 
