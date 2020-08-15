@@ -1,5 +1,13 @@
 name: Set up build with github
 description: Sets up builds of a maven applications which uses github token to authorize for reading github packages
+inputs:
+  repositories:
+    description: a comma separated list of name/id=url to wanted maven repositories, ex maven-central=https://repo.maven.apache.org/maven2,another.repo=https://something.else
+    required: true
+    default: maven-central=https://repo.maven.apache.org/maven2
+  maven_home:
+    description: path to maven home where the generated settings.xml should be located. If not provided, $HOME/.m2 will be used
+    required: false
 runs:
   using: node12
   main: dist/index.js
