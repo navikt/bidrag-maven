@@ -44,14 +44,14 @@ ls -la
 echo "goto $INPUT_CUCUMBER_PROJECT"
 cd "$INPUT_CUCUMBER_PROJECT" || exit 1
 
-find . -type f -name "q*.json"
+find . -type f -name "*.json"
 echo "running cucumber tests from $PWD"
 pwd
 
-if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
-  ENVIRONMENT=q1
+if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+  ENVIRONMENT=main
 else
-  ENVIRONMENT=q0
+  ENVIRONMENT=feature
 fi
 
 CUCUMBER_FILTER=""
