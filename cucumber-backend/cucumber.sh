@@ -29,12 +29,12 @@ INPUT_TEST_USER=$6
 INPUT_USERNAME=$7
 
 if [[ -z "$USER_AUTHENTICATION" ]]; then
-  >&2 echo ::error:: "No USER_AUTHENTICATION (password) for a nav user is configured"
+  >&2 echo ::error:: "No USER_AUTHENTICATION (password) for a user ([a-z]123456 username) is configured"
   exit 1;
 fi
 
 if [[ -z "$TEST_USER_AUTHENTICATION" ]]; then
-  >&2 echo ::error:: "No TEST_USER_AUTHENTICATION for for the test user is configured"
+  >&2 echo ::error:: "No TEST_USER_AUTHENTICATION for for the test user (z123456)is configured"
   exit 1;
 fi
 
@@ -44,7 +44,7 @@ ls -la
 echo "goto $INPUT_CUCUMBER_PROJECT"
 cd "$INPUT_CUCUMBER_PROJECT" || exit 1
 
-find . -type f -name "*.json"
+find . -type f -name "*.json" | grep -e main.json -e feature.json -e q..json
 echo "running cucumber tests from $PWD"
 pwd
 
@@ -83,7 +83,6 @@ if [[ -z "$INPUT_PIP_USER" ]]; then
 else
   if [[ -z "$PIP_USER_AUTHENTICATION" ]]; then
     >&2 echo ::error:: "No PIP_USER_AUTHENTICATION for for the pip user is configured"
-    >&3 echo ::error:: "see bidrag-actions/maven-cucumber-bidrag/README.md"
     exit 1;
   fi
 
