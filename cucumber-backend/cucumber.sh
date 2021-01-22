@@ -54,12 +54,12 @@ else
   ENVIRONMENT=feature
 fi
 
-CUCUMBER_FILTER=""
+CUCUMBER_FILTER="-Dcucumber.filter.tags=not @ignored"
 
 if [[ -z "$INPUT_CUCUMBER_TAG" ]]; then
   echo no cucumber tag is provided, no filtering is done...
 else
-  CUCUMBER_FILTER="-Dcucumber.filter.tags=@$INPUT_CUCUMBER_TAG"
+  CUCUMBER_FILTER="-Dcucumber.filter.tags=@$INPUT_CUCUMBER_TAG and not @ignored"
 fi
 
 SKIP_MAVEN_FAILURES=""
