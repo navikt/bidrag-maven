@@ -25,6 +25,10 @@ inputs:
   maven_image:
     description: The image containing maven and java version to use for running the integration tests.
     required: true
+  nais_project_folder:
+    description: The folder where nais applications have their nais-configuration stored
+    required: true
+    default: apps
   pip_user:
     description: The server user which is used in bidrag-sak
     required: false
