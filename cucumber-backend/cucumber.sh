@@ -14,7 +14,7 @@ set -e
 #    - INPUT_DO_NOT_FAIL == true
 #      kjører mvn INPUT_MAVEN_COMMAND -e på <cucumber-github project> i et docker image med all konfigurasjon for
 #      integeasjonstesting uten å feile ved testfeil
-# 6) legger til variabel for nais konfigurasjon med maven (-DPROJECT_NAIS_FOLDER/usr/src/mymaven/simple)
+# 6) legger til variabel for nais konfigurasjon med maven (-DPROJECT_NAIS_FOLDER/usr/src/mymaven/$INPUT_NAIS_PROJECT_FOLDER)
 # 7) Utfører mvn kommando med parametre som gitt
 # 8) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
 #
@@ -25,8 +25,9 @@ INPUT_DO_NOT_FAIL=$2
 INPUT_CUCUMBER_PROJECT=$3
 INPUT_MAVEN_COMMAND=$4
 INPUT_MAVEN_IMAGE=$5
-INPUT_TEST_USER=$6
-INPUT_USERNAME=$7
+INPUT_NAIS_PROJECT_FOLDER=$6
+INPUT_TEST_USER=$7
+INPUT_USERNAME=$8
 
 if [[ -z "$USER_AUTHENTICATION" ]]; then
   >&2 echo ::error:: "No USER_AUTHENTICATION (password) for a user ([a-z]123456 username) is configured"
@@ -70,7 +71,7 @@ else
   echo will fail if integrationstests have errors
 fi
 
-PROJECT_NAIS_FOLDER="-DPROJECT_NAIS_FOLDER=/usr/src/mymaven/simple"
+PROJECT_NAIS_FOLDER="-DPROJECT_NAIS_FOLDER=/usr/src/mymaven/$INPUT_NAIS_PROJECT_FOLDER"
 
 RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v $HOME/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn"
 MAVEN_ARGUMENTS="-e -DENVIRONMENT=$ENVIRONMENT -DUSERNAME=$INPUT_USERNAME -DTEST_USER=$INPUT_TEST_USER $PROJECT_NAIS_FOLDER $CUCUMBER_FILTER $SKIP_MAVEN_FAILURES"
