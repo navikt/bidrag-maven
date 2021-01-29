@@ -19,22 +19,16 @@ inputs:
     description: The command used to run tests with maven
     required: true
     default: test
-  optional_maven_command:
-    description: An optional maven command
-    required: false
   maven_image:
     description: The image containing maven and java version to use for running the integration tests.
     required: true
-  nais_project_folder:
-    description: The folder where nais applications have their nais-configuration stored
-    required: true
-    default: apps
-  pip_user:
-    description: no longer in use... will be removed in next major release
+  optional_maven_command:
+    description: An optional maven command
     required: false
-  test_user:
-    description: The test user which will be used running the scenarios in the integration tests
+  relative_json_path:
+    description: inputs containing evironment, username for test user, relative nais_project_folder, and azure credentials for apps secured with azure
     required: true
+    default: json/integrationInput.json
   username:
-    description: The nav user which will be used to set up security for the integration tests
-    required: true
+    description: The nav user which will be used to set up security for the integration tests (only required for tests with ISSO-token)
+    required: false
