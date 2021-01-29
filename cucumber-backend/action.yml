@@ -30,7 +30,7 @@ inputs:
     required: true
     default: apps
   pip_user:
-    description: The server user which is used in bidrag-sak
+    description: no longer in use... will be removed in next major release
     required: false
   test_user:
     description: The test user which will be used running the scenarios in the integration tests

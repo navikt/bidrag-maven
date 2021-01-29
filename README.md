@@ -16,6 +16,7 @@ endres når man skal forandre logikk i "action".
 
 Versjon | Endringstype | Beskrivelse
 ----|---|---
+v5.2.0 | Endret | `cucumber-backend`: cucumber script will always send pip authentication 
 v5.1.0 | Endret | `cucumber-backend`: removed hard coding of NAIS_PROJECT_FOLDER, can be specified - defaults to apps 
 v5.0.0 | Endret | `cucumber-backend`: environment is main or feature (the configurations of these determine namespace)
 v4.0.0 | Endret | `setup`: dynamic configuration using repositories as input argument
