@@ -1584,8 +1584,7 @@ async function run() {
     const githubProj = core.getInput('github_project');
     const mavenCommand = core.getInput('maven_command');
     const mavenImage = core.getInput('maven_image');
-    const naisProjectFolder = core.getInput('nais_project_folder');
-    const testUser = core.getInput('test_user');
+    const relativeJsonPath = core.getInput('relative_json_path')
     const username = core.getInput('username');
 
     // Execute cucumber bash script
@@ -1593,7 +1592,7 @@ async function run() {
         `${__dirname}/../cucumber.sh`,
         [
           cucumberTag, doNotFail, githubProj, mavenCommand, mavenImage,
-          naisProjectFolder, testUser, username
+          relativeJsonPath, username
         ]
     );
   } catch (error) {
