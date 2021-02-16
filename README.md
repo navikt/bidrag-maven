@@ -16,6 +16,7 @@ endres når man skal forandre logikk i "action".
 
 Versjon | Endringstype | Beskrivelse
 ----|---|---
+v6.1.0 | Endret | `cucumber-backend`: bruker cucumber.options som program argument (ikke cucumber.filter.tags) for å ignorere tags
 v6.0.0-beta | Endret | `cucumber-backend`: endret etter at input blir mottatt på fil (ikke brukere og passord), første kjøring
 v5.2.0 | Endret | `cucumber-backend`: cucumber script will always send pip authentication 
 v5.1.0 | Endret | `cucumber-backend`: removed hard coding of NAIS_PROJECT_FOLDER, can be specified - defaults to apps 
