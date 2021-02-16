@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 ############################################
 #
@@ -37,12 +37,12 @@ cd "$RUNNER_WORKSPACE" || exit 1;
 echo "goto $INPUT_GITHUB_PROJECT"
 cd "$INPUT_GITHUB_PROJECT" || exit 1
 
-CUCUMBER_OPTIONS="-Dcucumber.options=\"--tags=@bidrag-dokument-journalpost and not @ignored\""
+CUCUMBER_OPTIONS="\"--tags=not @ignored\""
 
 if [[ -z "$INPUT_CUCUMBER_TAG" ]]; then
   echo no cucumber tag is provided, running all tags except @ignored
 else
-  CUCUMBER_OPTIONS="-Dcucumber.options=\"--tags=@b$INPUT_CUCUMBER_TAG and not @ignored\""
+  CUCUMBER_OPTIONS="\"--tags=@$INPUT_CUCUMBER_TAG and not @ignored\""
 fi
 
 SKIP_MAVEN_FAILURES=""
@@ -54,7 +54,7 @@ else
 fi
 
 RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v $HOME/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn"
-MAVEN_ARGUMENTS="-e -DUSERNAME=$INPUT_USERNAME -DINTEGRATION_INPUT=$INPUT_RELATIVE_JSON_PATH $CUCUMBER_OPTIONS $SKIP_MAVEN_FAILURES"
+MAVEN_ARGUMENTS="-e -DUSERNAME=$INPUT_USERNAME -Dcucumber.options=$CUCUMBER_OPTIONS -DINTEGRATION_INPUT=$INPUT_RELATIVE_JSON_PATH $SKIP_MAVEN_FAILURES"
 
 echo "docker run: $RUN_ARGUMENT $INPUT_MAVEN_COMMAND"
 echo "maven args: $MAVEN_ARGUMENTS"
