@@ -37,12 +37,12 @@ cd "$RUNNER_WORKSPACE" || exit 1;
 echo "goto $INPUT_GITHUB_PROJECT"
 cd "$INPUT_GITHUB_PROJECT" || exit 1
 
-CUCUMBER_OPTIONS="-Dcucumber.options=\"--tags=@bidrag-dokument-journalpost and not @ignored\""
+CUCUMBER_OPTIONS=-Dcucumber.options="--tags=@bidrag-dokument-journalpost and not @ignored"
 
 if [[ -z "$INPUT_CUCUMBER_TAG" ]]; then
   echo no cucumber tag is provided, running all tags except @ignored
 else
-  CUCUMBER_OPTIONS="-Dcucumber.options=\"--tags=@b$INPUT_CUCUMBER_TAG and not @ignored\""
+  CUCUMBER_OPTIONS=-Dcucumber.options="--tags=@$INPUT_CUCUMBER_TAG and not @ignored"
 fi
 
 SKIP_MAVEN_FAILURES=""
