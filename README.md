@@ -16,6 +16,7 @@ endres når man skal forandre logikk i "action".
 
 Versjon | Endringstype | Beskrivelse
 ----|---|---
+v6-beta | Endret | `cucumber-backend`: bruker miljøvariabel for å filtrere ut tags
 v6-beta | Endret | `cucumber-backend`: fix for å fjerne ' som blir generert i kommandoer fra shell script
 v6.1.0 | Endret | `cucumber-backend`: bruker cucumber.options som program argument (ikke cucumber.filter.tags) for å ignorere tags
 v6.0.0-beta | Endret | `cucumber-backend`: endret etter at input blir mottatt på fil (ikke brukere og passord), første kjøring

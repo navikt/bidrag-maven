@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 ############################################
 #
@@ -37,13 +37,14 @@ cd "$RUNNER_WORKSPACE" || exit 1;
 echo "goto $INPUT_GITHUB_PROJECT"
 cd "$INPUT_GITHUB_PROJECT" || exit 1
 
-CUCUMBER_FILTER_TAGS="not @ignored"
-
 if [[ -z "$INPUT_CUCUMBER_TAG" ]]; then
+  export CUCUMBER_FILTER_TAGS="not @ignored"
   echo no cucumber tag is provided, running all tags except @ignored
 else
-  CUCUMBER_FILTER_TAGS="@$INPUT_CUCUMBER_TAG and not @ignored"
+  export CUCUMBER_FILTER_TAGS="@$INPUT_CUCUMBER_TAG and not @ignored"
 fi
+
+env | sort | grep CUCUMBER
 
 SKIP_MAVEN_FAILURES=""
 
