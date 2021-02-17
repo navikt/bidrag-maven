@@ -63,7 +63,15 @@ echo "maven args: $MAVEN_ARGUMENTS"
 
 AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION -DPIP_AUTH=$PIP_USER_AUTHENTICATION"
 
-docker run $(echo "-e CUCUMBER_FILTER_TAGS=$CUCUMBER_FILTER_TAGS $RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION" | sed "s/'//g")
+docker_options=(
+  -e "CUCUMBER_FILTER_TAGS=$CUCUMBER_FILTER_TAGS"
+  "$RUN_ARGUMENT"
+  "$INPUT_MAVEN_COMMAND"
+  "$MAVEN_ARGUMENTS"
+  "$AUTHENTICATION"
+)
+
+docker run "${docker_options[@]}"
 
 if [[ -z "$INPUT_OPTIONAL_MAVEN_COMMAND" ]]; then
   echo no optional maven command are provided. additional command is not executed...
