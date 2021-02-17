@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -e
 
 ############################################
 #
@@ -37,11 +37,12 @@ cd "$RUNNER_WORKSPACE" || exit 1;
 echo "goto $INPUT_GITHUB_PROJECT"
 cd "$INPUT_GITHUB_PROJECT" || exit 1
 
+CUCUMBER_FILTER_TAGS="\"not @ignored\""
+
 if [[ -z "$INPUT_CUCUMBER_TAG" ]]; then
-  export CUCUMBER_FILTER_TAGS="not @ignored"
   echo no cucumber tag is provided, running all tags except @ignored
 else
-  export CUCUMBER_FILTER_TAGS="@$INPUT_CUCUMBER_TAG and not @ignored"
+  CUCUMBER_FILTER_TAGS="\"@$INPUT_CUCUMBER_TAG and not @ignored\""
 fi
 
 env | sort | grep CUCUMBER
@@ -62,7 +63,7 @@ echo "maven args: $MAVEN_ARGUMENTS"
 
 AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION -DPIP_AUTH=$PIP_USER_AUTHENTICATION"
 
-docker run $(echo "$RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION" | sed "s/'//")
+docker run -e CUCUMBER_FILTER_TAGS=$CUCUMBER_FILTER_TAGS $(echo "$RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION" | sed "s/'//")
 
 if [[ -z "$INPUT_OPTIONAL_MAVEN_COMMAND" ]]; then
   echo no optional maven command are provided. additional command is not executed...
