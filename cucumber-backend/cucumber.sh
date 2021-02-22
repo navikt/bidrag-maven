@@ -18,7 +18,6 @@ set -x
 # 6) Når valgfri maven kommando er oppgitt, så kjøres også denne med docker
 #
 ############################################
-
 INPUT_CUCUMBER_TAG=$1
 INPUT_DO_NOT_FAIL=$2
 INPUT_GITHUB_PROJECT=$3
@@ -37,12 +36,12 @@ cd "$RUNNER_WORKSPACE" || exit 1;
 echo "goto $INPUT_GITHUB_PROJECT"
 cd "$INPUT_GITHUB_PROJECT" || exit 1
 
-CUCUMBER_FILTER_TAGS="\"not @ignored\""
+CUCUMBER_FILTER_TAGS="not @ignored"
 
 if [[ -z "$INPUT_CUCUMBER_TAG" ]]; then
   echo no cucumber tag is provided, running all tags except @ignored
 else
-  CUCUMBER_FILTER_TAGS="\"@$INPUT_CUCUMBER_TAG and not @ignored\""
+  CUCUMBER_FILTER_TAGS="@$INPUT_CUCUMBER_TAG and not @ignored"
 fi
 
 env | sort | grep CUCUMBER
@@ -71,7 +70,10 @@ docker_options=(
   $AUTHENTICATION
 )
 
-docker run "${docker_options[@]}"
+#docker run "${docker_options[@]}"
+
+$("docker run -e CUCUMBER_FILTER_TAGS=\"${CUCUMBER_FILTER_TAGS}\" $RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION")
+# "docker run -e CUCUMBER_FILTER_TAGS=\"${CUCUMBER_FILTER_TAGS}\" $RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION"
 
 if [[ -z "$INPUT_OPTIONAL_MAVEN_COMMAND" ]]; then
   echo no optional maven command are provided. additional command is not executed...
