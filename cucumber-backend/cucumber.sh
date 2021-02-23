@@ -8,6 +8,7 @@ set -x
 # 2) sjekker om miljøet har passord for testbruker
 # 3) går til $RUNNER_WORKSPACE og til $INPUT_GITHUB_PROJECT for å nå cucumber koden
 # 4) setter maven argumenter ihht til input argumenter
+#    - CUCUMBER_FILTER_TAGS for å filtrere bort cucumber tester settes alltid til "not @ignored" og evt. nais applikasjon
 #    - INPUT_DO_NOT_FAIL != true
 #      kjører mvn INPUT_MAVEN_COMMAND -e på <cucumber-github project> i et docker image med all konfigurasjon for
 #      integeasjonstesting og feiler hvis det er fail i integrasjonstestene
@@ -22,9 +23,8 @@ INPUT_CUCUMBER_TAG=$1
 INPUT_DO_NOT_FAIL=$2
 INPUT_GITHUB_PROJECT=$3
 INPUT_MAVEN_COMMAND=$4
-INPUT_MAVEN_IMAGE=$5
-INPUT_RELATIVE_JSON_PATH=$6
-INPUT_USERNAME=$7
+INPUT_RELATIVE_JSON_PATH=$5
+INPUT_USERNAME=$6
 
 if [[ -z "$TEST_USER_AUTHENTICATION" ]]; then
   >&2 echo ::error:: "No TEST_USER_AUTHENTICATION for for the test user (z123456)is configured"
@@ -54,7 +54,6 @@ else
   echo will fail if integrationstests have errors
 fi
 
-RUN_ARGUMENT="--rm -v $PWD:/usr/src/mymaven -v $HOME/.m2:/root/.m2 -w /usr/src/mymaven $INPUT_MAVEN_IMAGE mvn"
 MAVEN_ARGUMENTS="-e -DUSERNAME=$INPUT_USERNAME -DINTEGRATION_INPUT=$INPUT_RELATIVE_JSON_PATH $SKIP_MAVEN_FAILURES"
 
 echo "docker run: $RUN_ARGUMENT $INPUT_MAVEN_COMMAND"
@@ -62,18 +61,7 @@ echo "maven args: $MAVEN_ARGUMENTS"
 
 AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION -DPIP_AUTH=$PIP_USER_AUTHENTICATION"
 
-docker_options=(
-  -e CUCUMBER_FILTER_TAGS=$CUCUMBER_FILTER_TAGS
-  $RUN_ARGUMENT
-  $INPUT_MAVEN_COMMAND
-  $MAVEN_ARGUMENTS
-  $AUTHENTICATION
-)
-
-#docker run "${docker_options[@]}"
-
-$("docker run -e CUCUMBER_FILTER_TAGS=\"${CUCUMBER_FILTER_TAGS}\" $RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION")
-# "docker run -e CUCUMBER_FILTER_TAGS=\"${CUCUMBER_FILTER_TAGS}\" $RUN_ARGUMENT $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION"
+mvn "$INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION"
 
 if [[ -z "$INPUT_OPTIONAL_MAVEN_COMMAND" ]]; then
   echo no optional maven command are provided. additional command is not executed...

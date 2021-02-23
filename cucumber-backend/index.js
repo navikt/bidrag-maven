@@ -7,7 +7,6 @@ async function run() {
     const doNotFail = core.getInput('do_not_fail');
     const githubProj = core.getInput('github_project');
     const mavenCommand = core.getInput('maven_command');
-    const mavenImage = core.getInput('maven_image');
     const relativeJsonPath = core.getInput('relative_json_path')
     const username = core.getInput('username');
 
@@ -15,8 +14,8 @@ async function run() {
     await exec.exec(
         `${__dirname}/../cucumber.sh`,
         [
-          cucumberTag, doNotFail, githubProj, mavenCommand, mavenImage,
-          relativeJsonPath, username
+          cucumberTag, doNotFail, githubProj, mavenCommand, relativeJsonPath,
+          username
         ]
     );
   } catch (error) {

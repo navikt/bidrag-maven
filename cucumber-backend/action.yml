@@ -19,9 +19,6 @@ inputs:
     description: The command used to run tests with maven
     required: true
     default: test
-  maven_image:
-    description: The image containing maven and java version to use for running the integration tests.
-    required: true
   optional_maven_command:
     description: An optional maven command
     required: false
