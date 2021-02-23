@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -e
 
 ############################################
 #
@@ -56,12 +56,13 @@ fi
 
 MAVEN_ARGUMENTS="-e -DUSERNAME=$INPUT_USERNAME -DINTEGRATION_INPUT=$INPUT_RELATIVE_JSON_PATH $SKIP_MAVEN_FAILURES"
 
-echo "docker run: $RUN_ARGUMENT $INPUT_MAVEN_COMMAND"
-echo "maven args: $MAVEN_ARGUMENTS"
+echo "CUCUMBER_FILTER_TAGS=$CUCUMBER_FILTER_TAGS"
+echo "maven with args: $INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS"
+which mvn
 
 AUTHENTICATION="-DUSER_AUTH=$USER_AUTHENTICATION -DTEST_AUTH=$TEST_USER_AUTHENTICATION -DPIP_AUTH=$PIP_USER_AUTHENTICATION"
 
-mvn "$INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION"
+mvn $( echo "$INPUT_MAVEN_COMMAND $MAVEN_ARGUMENTS $AUTHENTICATION" | tr -d "'" )
 
 if [[ -z "$INPUT_OPTIONAL_MAVEN_COMMAND" ]]; then
   echo no optional maven command are provided. additional command is not executed...
