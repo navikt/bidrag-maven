@@ -3,10 +3,3 @@ description: Verifies that the maven pom file has no SNAPSHOT dependencies. This
 runs:
   using: node12
   main: dist/index.js
-inputs:
-  maven_image:
-    description: use a maven docker image to run maven
-    required: false
-  src_folder:
-    description: the name of a source folder to run the commands form
-    required: false

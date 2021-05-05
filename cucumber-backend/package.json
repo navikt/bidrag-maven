@@ -1,8 +1,0 @@
-{
-  "name": "cucumber-backend",
-  "version": "1.0.0",
-  "dependencies": {
-    "@actions/core": "^1.2.7",
-    "@actions/exec": "^1.0.4"
-  }
-}
