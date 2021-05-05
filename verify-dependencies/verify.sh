@@ -9,14 +9,9 @@ fi
 echo "Working directory"
 pwd
 
-if [ -z "$INPUT_MAVEN_IMAGE" ]; then
-  mvn -B dependency:tree | tee .dependency-tree
-else
-  docker run --rm -v "$PWD":/usr/src/mymaven -v "$HOME"/.m2:/root/.m2 -w /usr/src/mymaven \
-    "$INPUT_MAVEN_IMAGE" mvn -B dependency:tree | tee .dependency-tree
-fi
+mvn -B dependency:tree | tee .dependency-tree
 
-cat .dependency-tree | grep BUILD | grep -c SUCCESS | sed 's/1//' # fails if count is 0
+cat .dependency-tree | grep BUILD | grep -c SUCCESS # fails if count is 0
 
 DEPENDENCIES=$(cat .dependency-tree | grep "\[INFO]" | grep -e "\- " -e "+-")
 COUNT=$(echo "$DEPENDENCIES" | grep -c SNAPSHOT || true)
