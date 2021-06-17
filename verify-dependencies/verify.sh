@@ -11,7 +11,7 @@ pwd
 
 mvn -B dependency:tree | tee .dependency-tree
 
-cat .dependency-tree | grep BUILD | grep -c SUCCESS # fails if count is 0
+cat .dependency-tree | grep BUILD | grep -c SUCCESS > /dev/null # fails if count is 0
 
 DEPENDENCIES=$(cat .dependency-tree | grep "\[INFO]" | grep -e "\- " -e "+-")
 COUNT=$(echo "$DEPENDENCIES" | grep -c SNAPSHOT || true)
