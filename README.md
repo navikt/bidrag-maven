@@ -16,7 +16,8 @@ endres når man skal forandre logikk i "action".
 
 Versjon | Endringstype | Beskrivelse
 ----|---|---
-v7.0.2 | Endret | upgrade @actions/core from 1.5.0 to 1.6.0
+v7.0.3 | Endret | upgrade @actions/core from 1.5.0 to 1.6.0
+v7.0.2 | Endret | snyk.io fixes
 v7.0.1 | Endret | `verify-dependencies` sjekker om maven bygg er vellykket. Denne outputen blir ikke vist
 v7.0.0 | Slettet | `cucumber-backend` og bump av actions/xoew i bygg av andre actions
 v6.1.0 | Endret | `cucumber-backend`: bruker cucumber.options som program argument (ikke cucumber.filter.tags) for å ignorere tags
