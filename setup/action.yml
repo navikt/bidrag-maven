@@ -9,5 +9,5 @@ inputs:
     description: path to maven home where the generated settings.xml should be located. If not provided, $HOME/.m2 will be used
     required: false
 runs:
-  using: node12
+  using: node16
   main: dist/index.js

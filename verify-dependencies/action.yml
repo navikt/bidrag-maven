@@ -1,5 +1,5 @@
 name: No SNAPSHOT dependencies
 description: Verifies that the maven pom file has no SNAPSHOT dependencies. This dependent on a runner/repository using MVN
 runs:
-  using: node12
+  using: node16
   main: dist/index.js

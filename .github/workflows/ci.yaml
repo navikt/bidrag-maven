@@ -2,15 +2,15 @@ name: build actions
 on:
   push:
     branches:
-      - '**'
+      - 'ignore'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     name: build actions with ncc
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1.4.4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '13.x'
       - run: npm i -g @zeit/ncc
